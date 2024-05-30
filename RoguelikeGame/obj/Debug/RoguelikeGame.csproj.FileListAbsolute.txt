@@ -1,0 +1,15 @@
+D:\_Gamedev\_Projects\RoguelikeGame\RoguelikeGame\bin\Debug\RoguelikeGame.exe.config
+D:\_Gamedev\_Projects\RoguelikeGame\RoguelikeGame\bin\Debug\RoguelikeGame.exe
+D:\_Gamedev\_Projects\RoguelikeGame\RoguelikeGame\bin\Debug\RoguelikeGame.pdb
+D:\_Gamedev\_Projects\RoguelikeGame\RoguelikeGame\bin\Debug\OpenTK.dll
+D:\_Gamedev\_Projects\RoguelikeGame\RoguelikeGame\bin\Debug\RLNET.dll
+D:\_Gamedev\_Projects\RoguelikeGame\RoguelikeGame\bin\Debug\RogueSharp.dll
+D:\_Gamedev\_Projects\RoguelikeGame\RoguelikeGame\bin\Debug\OpenTK.xml
+D:\_Gamedev\_Projects\RoguelikeGame\RoguelikeGame\bin\Debug\OpenTK.dll.config
+D:\_Gamedev\_Projects\RoguelikeGame\RoguelikeGame\obj\Debug\RoguelikeGame.csproj.AssemblyReference.cache
+D:\_Gamedev\_Projects\RoguelikeGame\RoguelikeGame\obj\Debug\RoguelikeGame.csproj.SuggestedBindingRedirects.cache
+D:\_Gamedev\_Projects\RoguelikeGame\RoguelikeGame\obj\Debug\RoguelikeGame.csproj.CoreCompileInputs.cache
+D:\_Gamedev\_Projects\RoguelikeGame\RoguelikeGame\obj\Debug\RoguelikeGame.csproj.CopyComplete
+D:\_Gamedev\_Projects\RoguelikeGame\RoguelikeGame\obj\Debug\RoguelikeGame.exe
+D:\_Gamedev\_Projects\RoguelikeGame\RoguelikeGame\obj\Debug\RoguelikeGame.pdb
+D:\_Gamedev\_Projects\RoguelikeGame\RoguelikeGame\bin\Debug\terminal8x8.png
