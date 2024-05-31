@@ -29,24 +29,23 @@ namespace RogueSharpV3Tutorial
         public static SubConsole _inventoryConsole;
 
         public static DungeonMap DungeonMap { get; private set; }
+        public static Player Player { get; private set; }
 
+        private const string fontFileName = "terminal8x8.png";
+        private const string consoleTitle = "RougeSharp V3 Tutorial - Level 1";
         public void Init()
         {
-            // This must be the exact name of the bitmap font file we are using or it will error.
-            string fontFileName = "terminal8x8.png";
-            // The title will appear at the top of the console window
-            string consoleTitle = "RougeSharp V3 Tutorial - Level 1";
-
-            // Tell RLNet to use the bitmap font that we specified and that each tile is 8 x 8 pixels
+            
             _rootConsole = new RLRootConsole(fontFileName, _screenWidth, _screenHeight, 8, 8, 1f, consoleTitle);
+            Player = new Player();
+            
+
 
             InitMap();
-
             InitMessage();
-
             InitStats();
-
             InitInventory();
+
 
             MapGenerator mapGenerator = new MapGenerator(_mapConsole.Width, _mapConsole.Height);
             DungeonMap = mapGenerator.CreateMap();
@@ -63,9 +62,14 @@ namespace RogueSharpV3Tutorial
         {
             _mapConsole = new SubConsole(80, 48);
 
+            //Update Calls
+            _mapConsole.OnUpdate += (console, root) => DungeonMap.UpdatePlayerFieldOfView();
+
             //Draw Calls
-            _mapConsole.OnDraw += (console, root) => console.SetBackgroundColor(RLColor.Black);
             _mapConsole.OnDraw += (console, root) => DungeonMap.Draw(console.console);
+            _mapConsole.OnDraw += (console, root) => Player.Draw(console.console, DungeonMap);
+
+
             _mapConsole.OnDraw += (console, root) => console.Blit(root, 0, 11);
         }
         private static void InitMessage()
@@ -102,7 +106,6 @@ namespace RogueSharpV3Tutorial
             _inventoryConsole.OnDraw += (console, root) => console.Blit(root, 0, 0);
         }
 
-        // Event handler for RLNET's Update event
         private void OnRootConsoleUpdate(object sender, UpdateEventArgs e)
         {
             _mapConsole.Update(_rootConsole);
@@ -110,8 +113,6 @@ namespace RogueSharpV3Tutorial
             _statConsole.Update(_rootConsole);
             _inventoryConsole.Update(_rootConsole);
         }
-
-        // Event handler for RLNET's Render event
         private void OnRootConsoleRender(object sender, UpdateEventArgs e)
         {
             // Blit the sub consoles to the root console in the correct locations

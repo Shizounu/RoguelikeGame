@@ -52,9 +52,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Core\Actor.cs" />
     <Compile Include="Core\Color.cs" />
     <Compile Include="Core\DungeonMap.cs" />
+    <Compile Include="Core\Player.cs" />
     <Compile Include="Core\SubConsole.cs" />
+    <Compile Include="Interface\IActor.cs" />
+    <Compile Include="Interface\IDrawable.cs" />
     <Compile Include="Systems\MapGenerator.cs" />
     <Compile Include="Core\Palette.cs" />
     <Compile Include="Game.cs" />

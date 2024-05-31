@@ -20,5 +20,6 @@ namespace RoguelikeGame.Core
         public static readonly RLColor WallFov = Palette.SecondaryLighter;
 
         public static readonly RLColor TextHeading = Palette.DbLight;
+        public static readonly RLColor Player = Palette.DbLight;
     }
 }
