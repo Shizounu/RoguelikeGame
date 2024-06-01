@@ -1,8 +1,9 @@
 ﻿using RLNET;
 using RoguelikeGame.Core;
+using RoguelikeGame.Systems;
 using System.Runtime.InteropServices.ComTypes;
 
-namespace RogueSharpV3Tutorial
+namespace RoguelikeGame
 {
     public class Program
     {
@@ -17,6 +18,8 @@ namespace RogueSharpV3Tutorial
 
     public class Game
     {
+        private static bool _isDirty = true; 
+
 
         // The screen height and width are in number of tiles
         private static readonly int _screenWidth = 100;
@@ -28,17 +31,19 @@ namespace RogueSharpV3Tutorial
         public static SubConsole _statConsole;
         public static SubConsole _inventoryConsole;
 
-        public static DungeonMap DungeonMap { get; private set; }
-        public static Player Player { get; private set; }
+        public static Player Player;
+        public static InputSystem _inputSystem;
+        public static CommandSystem CommandSystem;
+        public static DungeonMap DungeonMap;
+        public static MessageLog MessageLog;
 
         private const string fontFileName = "terminal8x8.png";
-        private const string consoleTitle = "RougeSharp V3 Tutorial - Level 1";
+        private const string consoleTitle = "Roguesharp Roguelike";
         public void Init()
         {
             
             _rootConsole = new RLRootConsole(fontFileName, _screenWidth, _screenHeight, 8, 8, 1f, consoleTitle);
-            Player = new Player();
-            
+            CommandSystem = new CommandSystem();
 
 
             InitMap();
@@ -46,9 +51,7 @@ namespace RogueSharpV3Tutorial
             InitStats();
             InitInventory();
 
-
-            MapGenerator mapGenerator = new MapGenerator(_mapConsole.Width, _mapConsole.Height);
-            DungeonMap = mapGenerator.CreateMap();
+            InitInput();
 
             // Set up a handler for RLNET's Update event
             _rootConsole.Update += OnRootConsoleUpdate;
@@ -58,9 +61,30 @@ namespace RogueSharpV3Tutorial
             _rootConsole.Run();
         }
 
+
+
+
+        private static void InitInput()
+        {
+            _inputSystem = new InputSystem();
+
+            _rootConsole.Update += (obj, args) => _inputSystem.CheckInput(_rootConsole);
+
+            _inputSystem.OnUserInput += () => _isDirty = true;
+
+            _inputSystem.OnUpInput += () => CommandSystem.MovePlayer(Direction.Up);
+            _inputSystem.OnDownInput += () => CommandSystem.MovePlayer(Direction.Down);
+            _inputSystem.OnLeftInput += () => CommandSystem.MovePlayer(Direction.Left);
+            _inputSystem.OnRightInput += () => CommandSystem.MovePlayer(Direction.Right);
+
+            _inputSystem.OnCloseInput += () => _rootConsole.Close();
+        }
         private static void InitMap()
         {
             _mapConsole = new SubConsole(80, 48);
+
+            MapGenerator mapGenerator = new MapGenerator(_mapConsole.Width, _mapConsole.Height, 20, 13, 7);
+            DungeonMap = mapGenerator.CreateMap();
 
             //Update Calls
             _mapConsole.OnUpdate += (console, root) => DungeonMap.UpdatePlayerFieldOfView();
@@ -75,12 +99,14 @@ namespace RogueSharpV3Tutorial
         private static void InitMessage()
         {
             _messageConsole = new SubConsole(80, 11);
+            MessageLog = new MessageLog();
+            MessageLog.Add("The rogue arrives on level 1");
+            MessageLog.Add($"Level created with seed '{RandomProvider.Instance.Seed}'");
 
             //Updates
-            _messageConsole.OnUpdate += (console, root) => console.SetBackgroundColor(RLColor.Gray);
-            _messageConsole.OnUpdate += (console, root) => console.console.Print(1, 1, "Messages", RLColor.White);
-            
+
             //Draws
+            _messageConsole.OnDraw += (console, root) => MessageLog.Draw(console.console);
             _messageConsole.OnDraw += (console, root) => console.Blit(root, 0, _screenHeight - 11);
         }
         private static void InitStats()
@@ -88,10 +114,22 @@ namespace RogueSharpV3Tutorial
             _statConsole = new SubConsole(20, 70);
 
             //Update
-            _statConsole.OnUpdate += (console, root) => console.SetBackgroundColor(RLColor.Brown);
-            _statConsole.OnUpdate += (console, root) => console.console.Print(1, 1, "Stats", RLColor.White);
+            
 
             //Draw
+            _statConsole.OnDraw += (console, root) => Player.DrawStats(console.console);
+
+            _statConsole.OnDraw += (console, root) => {
+                int i = 0;
+                foreach (var Monster in DungeonMap.Monsters) {
+                    if(DungeonMap.IsInFov(Monster.X, Monster.Y))
+                    {
+                        Monster.DrawStats(console.console, i);
+                        i++;
+                    }
+                }
+            };
+
             _statConsole.OnDraw += (console, root) => console.Blit(root, 80, 0);
         }
         private static void InitInventory()
@@ -106,6 +144,8 @@ namespace RogueSharpV3Tutorial
             _inventoryConsole.OnDraw += (console, root) => console.Blit(root, 0, 0);
         }
 
+
+
         private void OnRootConsoleUpdate(object sender, UpdateEventArgs e)
         {
             _mapConsole.Update(_rootConsole);
@@ -115,6 +155,9 @@ namespace RogueSharpV3Tutorial
         }
         private void OnRootConsoleRender(object sender, UpdateEventArgs e)
         {
+            if (!_isDirty)
+                return;
+
             // Blit the sub consoles to the root console in the correct locations
             _mapConsole.Draw(_rootConsole);
             _messageConsole.Draw(_rootConsole);
@@ -123,6 +166,8 @@ namespace RogueSharpV3Tutorial
 
             // Tell RLNET to draw the console that we set
             _rootConsole.Draw();
+
+            _isDirty = true;
         }
     }
 }

@@ -19,11 +19,14 @@ namespace RoguelikeGame.Core
         public readonly int Width;
         public readonly int Height;
 
-        public OnUpdate OnUpdate;
-        public OnRender OnDraw;
+        public event OnUpdate OnUpdate;
+        public event OnRender OnDraw;
 
-        public void Update(RLRootConsole root) => OnUpdate?.Invoke(this, root); 
-        public void Draw(RLRootConsole root) => OnDraw?.Invoke(this, root);
+        public void Update(RLRootConsole root) => OnUpdate?.Invoke(this, root);
+        public void Draw(RLRootConsole root) {
+            console.Clear();
+            OnDraw?.Invoke(this, root);
+        } 
         
         public void Blit(RLRootConsole root,int DestX, int DestY)
         {

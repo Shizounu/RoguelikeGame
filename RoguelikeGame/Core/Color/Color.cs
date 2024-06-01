@@ -21,5 +21,10 @@ namespace RoguelikeGame.Core
 
         public static readonly RLColor TextHeading = Palette.DbLight;
         public static readonly RLColor Player = Palette.DbLight;
+
+        public static RLColor Text = Palette.DbLight;
+        public static RLColor Gold = Palette.DbSun;
+
+        public static RLColor KoboldColor = Palette.DbBrightWood;
     }
 }
