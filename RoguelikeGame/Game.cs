@@ -1,6 +1,9 @@
 ﻿using RLNET;
 using RoguelikeGame.Core;
+using RoguelikeGame.Interfaces_and_Abstracts;
 using RoguelikeGame.Systems;
+using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.InteropServices.ComTypes;
 
 namespace RoguelikeGame
@@ -35,7 +38,7 @@ namespace RoguelikeGame
         public static CommandSystem CommandSystem;
         public static DungeonMap DungeonMap;
 
-        private static int _mapLevel = 1;
+        public static int _mapLevel = 1;
 
         private const string fontFileName = "terminal8x8.png";
         private const string consoleTitle = "Roguesharp Roguelike";
@@ -84,12 +87,10 @@ namespace RoguelikeGame
             InputSystem.Instance.OnRightInput += () => CommandSystem.MovePlayer(Direction.Right);
             InputSystem.Instance.OnInteractInput += () =>
             {
-                if (DungeonMap.CanMoveDownToNextLevel())
+                List<IInteractable> interactables = DungeonMap.GetInteractablesAt(Player.X, Player.Y);
+                if(interactables.Count > 0)
                 {
-                    MapGenerator mapGenerator = new MapGenerator(_mapConsole.Width, _mapConsole.Height, 20, 13, 7, ++_mapLevel);
-                    DungeonMap = mapGenerator.CreateMap();
-                    //CommandSystem = new CommandSystem();
-                    //_rootConsole.Title = $"RougeSharp RLNet Tutorial - Level {_mapLevel}";
+                    interactables.First().Interact();
                 }
             };
 

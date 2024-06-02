@@ -63,6 +63,7 @@
     <Compile Include="Core\Actors\Player.cs" />
     <Compile Include="Core\Map\Stairs.cs" />
     <Compile Include="Interfaces and Abstracts\IBehaviour.cs" />
+    <Compile Include="Interfaces and Abstracts\IInteractable.cs" />
     <Compile Include="Interfaces and Abstracts\ISchedulable.cs" />
     <Compile Include="Interfaces and Abstracts\Singleton.cs" />
     <Compile Include="Systems\Scheduling System\SchedulingSystem.cs" />

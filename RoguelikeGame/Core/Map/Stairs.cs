@@ -1,5 +1,6 @@
 ﻿using RLNET;
 using RoguelikeGame.Interface;
+using RoguelikeGame.Interfaces_and_Abstracts;
 using RogueSharp;
 using System;
 using System.Collections.Generic;
@@ -9,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace RoguelikeGame.Core
 {
-    public class Stairs : IDrawable
+    public class Stairs : IDrawable, IInteractable
     {
         public RLColor Color
         {
@@ -51,6 +52,12 @@ namespace RoguelikeGame.Core
             }
 
             console.Set(X, Y, Color, null, Symbol);
+        }
+
+        public void Interact()
+        {
+            MapGenerator mapGenerator = new MapGenerator(Game._mapConsole.Width, Game._mapConsole.Height, 20, 13, 7, ++Game._mapLevel);
+            Game.DungeonMap = mapGenerator.CreateMap();
         }
     }
 }

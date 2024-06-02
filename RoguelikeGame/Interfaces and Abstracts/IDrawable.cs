@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace RoguelikeGame.Interface
 {
-    internal interface IDrawable
+    public interface IDrawable
     {
         RLColor Color { get; set; }
         char Symbol { get; set; }

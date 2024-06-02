@@ -248,18 +248,18 @@ namespace RoguelikeGame.Core
 
         private void CreateStairs()
         {
-            _map.StairsUp = new Stairs
+            _map.AddInteractable(new Stairs
             {
                 X = _map.Rooms.First().Center.X + 1,
                 Y = _map.Rooms.First().Center.Y,
                 IsUp = true
-            };
-            _map.StairsDown = new Stairs
+            });
+            _map.AddInteractable( new Stairs
             {
                 X = _map.Rooms.Last().Center.X,
                 Y = _map.Rooms.Last().Center.Y,
                 IsUp = false
-            };
+            });
         }
     }
 }

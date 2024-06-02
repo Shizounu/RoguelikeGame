@@ -1,4 +1,5 @@
 ﻿using RLNET;
+using RoguelikeGame.Interfaces_and_Abstracts;
 using RoguelikeGame.Systems;
 using RogueSharp;
 using System;
@@ -15,8 +16,7 @@ namespace RoguelikeGame.Core
         public List<Rectangle> Rooms = new List<Rectangle>();
         public List<Monster> Monsters = new List<Monster>();
         public List<Door> Doors = new List<Door>();
-        public Stairs StairsUp { get; set; }
-        public Stairs StairsDown { get; set; }
+        public List<IInteractable> interactables = new List<IInteractable>();
 
         public DungeonMap()
         {
@@ -27,6 +27,7 @@ namespace RoguelikeGame.Core
 
         }
 
+        #region Drawing
         // The Draw method will be called each time the map is updated
         // It will render all of the symbols/colors for each cell to the map sub console
         public void Draw(RLConsole mapConsole)
@@ -38,36 +39,11 @@ namespace RoguelikeGame.Core
                 monster.Draw(mapConsole, this);
             foreach (Door door in Doors)
                 door.Draw(mapConsole, this);
+            foreach (IInteractable interactable in interactables) 
+                interactable.Draw(mapConsole, this);
 
-            StairsUp.Draw(mapConsole, this);
-            StairsDown.Draw(mapConsole, this);
 
         }
-
-        // This method will be called any time we move the player to update field-of-view
-        public void UpdatePlayerFieldOfView()
-        {
-            Player player = Game.Player;
-            // Compute the field-of-view based on the player's location and awareness
-            ComputeFov(player.X, player.Y, player.Awareness, true);
-            // Mark all cells in field-of-view as having been explored
-            foreach (Cell cell in GetAllCells())
-            {
-                if (IsInFov(cell.X, cell.Y))
-                {
-                    SetCellProperties(cell.X, cell.Y, cell.IsTransparent, cell.IsWalkable, true);
-                }
-            }
-        }
-        // Called by MapGenerator after we generate a new map to add the player to the map
-        public void AddPlayer(Player player)
-        {
-            Game.Player = player;
-            SchedulingSystem.Instance.Add(player);
-            SetIsWalkable(player.X, player.Y, false);
-            UpdatePlayerFieldOfView();
-        }
-
 
         private void SetConsoleSymbolForCell(RLConsole console, Cell cell)
         {
@@ -105,6 +81,26 @@ namespace RoguelikeGame.Core
             }
         }
 
+
+        #endregion
+
+        #region Logic
+        // This method will be called any time we move the player to update field-of-view
+        public void UpdatePlayerFieldOfView()
+        {
+            Player player = Game.Player;
+            // Compute the field-of-view based on the player's location and awareness
+            ComputeFov(player.X, player.Y, player.Awareness, true);
+            // Mark all cells in field-of-view as having been explored
+            foreach (Cell cell in GetAllCells())
+            {
+                if (IsInFov(cell.X, cell.Y))
+                {
+                    SetCellProperties(cell.X, cell.Y, cell.IsTransparent, cell.IsWalkable, true);
+                }
+            }
+        }
+
         // Returns true when able to place the Actor on the cell or false otherwise
         public bool SetActorPosition(Actor actor, int x, int y)
         {
@@ -137,14 +133,6 @@ namespace RoguelikeGame.Core
             SetCellProperties(cell.X, cell.Y, cell.IsTransparent, isWalkable, cell.IsExplored);
         }
 
-        public void AddMonster(Monster monster)
-        {
-            Monsters.Add(monster);
-            SchedulingSystem.Instance.Add(monster);
-            // After adding the monster to the map make sure to make the cell not walkable
-            SetIsWalkable(monster.X, monster.Y, false);
-        }
-
         // Look for a random location in the room that is walkable.
         public Point GetRandomWalkableLocationInRoom(Rectangle room)
         {
@@ -165,39 +153,12 @@ namespace RoguelikeGame.Core
             return default;
         }
 
-        // Iterate through each Cell in the room and return true if any are walkable
-        public bool DoesRoomHaveWalkableSpace(Rectangle room)
-        {
-            for (int x = 1; x <= room.Width - 2; x++)
-            {
-                for (int y = 1; y <= room.Height - 2; y++)
-                {
-                    if (IsWalkable(x + room.X, y + room.Y))
-                    {
-                        return true;
-                    }
-                }
-            }
-            return false;
-        }
-
         public void RemoveMonster(Monster monster)
         {
             Monsters.Remove(monster);
             SchedulingSystem.Instance.Remove(monster);
             // After removing the monster from the map, make sure the cell is walkable again
             SetIsWalkable(monster.X, monster.Y, true);
-        }
-
-        public Monster GetMonsterAt(int x, int y)
-        {
-            return Monsters.FirstOrDefault(m => m.X == x && m.Y == y);
-        }
-
-        // Return the door at the x,y position or null if one is not found.
-        public Door GetDoor(int x, int y)
-        {
-            return Doors.SingleOrDefault(d => d.X == x && d.Y == y);
         }
 
         // The actor opens the door located at the x,y position
@@ -214,11 +175,67 @@ namespace RoguelikeGame.Core
                 MessageLog.Instance.Add($"{actor.Name} opened a door");
             }
         }
+        #endregion
 
-        public bool CanMoveDownToNextLevel()
+        #region Instatiators
+        // Called by MapGenerator after we generate a new map to add the player to the map
+        public void AddPlayer(Player player)
         {
-            Player player = Game.Player;
-            return StairsDown.X == player.X && StairsDown.Y == player.Y;
+            Game.Player = player;
+            SchedulingSystem.Instance.Add(player);
+            SetIsWalkable(player.X, player.Y, false);
+            UpdatePlayerFieldOfView();
         }
+
+        public void AddMonster(Monster monster)
+        {
+            Monsters.Add(monster);
+            SchedulingSystem.Instance.Add(monster);
+            // After adding the monster to the map make sure to make the cell not walkable
+            SetIsWalkable(monster.X, monster.Y, false);
+        }
+
+        public void AddInteractable(IInteractable interactable)
+        {
+            interactables.Add(interactable);
+        }
+        #endregion
+
+        #region Helpers
+        // Iterate through each Cell in the room and return true if any are walkable
+        public bool DoesRoomHaveWalkableSpace(Rectangle room)
+        {
+            for (int x = 1; x <= room.Width - 2; x++)
+            {
+                for (int y = 1; y <= room.Height - 2; y++)
+                {
+                    if (IsWalkable(x + room.X, y + room.Y))
+                    {
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }
+
+        public Monster GetMonsterAt(int x, int y)
+        {
+            return Monsters.FirstOrDefault(m => m.X == x && m.Y == y);
+        }
+
+        // Return the door at the x,y position or null if one is not found.
+        public Door GetDoor(int x, int y)
+        {
+            return Doors.SingleOrDefault(d => d.X == x && d.Y == y);
+        }
+
+        public List<IInteractable> GetInteractablesAt(int X, int Y) {
+            Player player = Game.Player;
+            
+            return interactables.Where(ctx => ctx.X == X &&  ctx.Y == Y).ToList();
+        }
+        #endregion
+    
+    
     }
 }
