@@ -1,5 +1,6 @@
 ﻿using RoguelikeGame.Core;
 using RoguelikeGame.Interface;
+using RoguelikeGame.Interfaces_and_Abstracts;
 using RogueSharp;
 using RogueSharp.DiceNotation;
 using System;
@@ -21,10 +22,10 @@ namespace RoguelikeGame.Systems
 
             int blocks = ResolveDefense(defender, hits, attackMessage, defenseMessage);
 
-            Game.MessageLog.Add(attackMessage.ToString());
+            MessageLog.Instance.Add(attackMessage.ToString());
             if (!string.IsNullOrWhiteSpace(defenseMessage.ToString()))
             {
-                Game.MessageLog.Add(defenseMessage.ToString());
+                MessageLog.Instance.Add(defenseMessage.ToString());
             }
 
             int damage = hits - blocks;
@@ -98,7 +99,7 @@ namespace RoguelikeGame.Systems
             {
                 defender.Health = defender.Health - damage;
 
-                Game.MessageLog.Add($"  {defender.Name} was hit for {damage} damage");
+                MessageLog.Instance.Add($"  {defender.Name} was hit for {damage} damage");
 
                 if (defender.Health <= 0)
                 {
@@ -107,7 +108,7 @@ namespace RoguelikeGame.Systems
             }
             else
             {
-                Game.MessageLog.Add($"  {defender.Name} blocked all damage");
+                MessageLog.Instance.Add($"  {defender.Name} blocked all damage");
             }
         }
 
@@ -116,13 +117,13 @@ namespace RoguelikeGame.Systems
         {
             if (defender is Player)
             {
-                Game.MessageLog.Add($"  {defender.Name} was killed, GAME OVER MAN!");
+                MessageLog.Instance.Add($"  {defender.Name} was killed, GAME OVER MAN!");
             }
             else if (defender is Monster)
             {
                 Game.DungeonMap.RemoveMonster((Monster)defender);
 
-                Game.MessageLog.Add($"  {defender.Name} died and dropped {defender.Gold} gold");
+                MessageLog.Instance.Add($"  {defender.Name} died and dropped {defender.Gold} gold");
             }
         }
 
@@ -186,11 +187,11 @@ namespace RoguelikeGame.Systems
 
         public void ActivateMonsters()
         {
-            IScheduleable scheduleable = Game.SchedulingSystem.Get();
+            IScheduleable scheduleable = SchedulingSystem.Instance.Get();
             if (scheduleable is Player)
             {
                 IsPlayerTurn = true;
-                Game.SchedulingSystem.Add(Game.Player);
+                SchedulingSystem.Instance.Add(Game.Player);
             }
             else
             {
@@ -199,7 +200,7 @@ namespace RoguelikeGame.Systems
                 if (monster != null)
                 {
                     monster.PerformAction(this);
-                    Game.SchedulingSystem.Add(monster);
+                    SchedulingSystem.Instance.Add(monster);
                 }
 
                 ActivateMonsters();

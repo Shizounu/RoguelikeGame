@@ -32,11 +32,8 @@ namespace RoguelikeGame
         public static SubConsole _inventoryConsole;
 
         public static Player Player;
-        public static InputSystem _inputSystem;
         public static CommandSystem CommandSystem;
         public static DungeonMap DungeonMap;
-        public static MessageLog MessageLog;
-        public static SchedulingSystem SchedulingSystem;
 
         private static int _mapLevel = 1;
 
@@ -47,7 +44,6 @@ namespace RoguelikeGame
             
             _rootConsole = new RLRootConsole(fontFileName, _screenWidth, _screenHeight, 8, 8, 1f, consoleTitle);
             CommandSystem = new CommandSystem();
-            SchedulingSystem = new SchedulingSystem();
 
             InitMap();
             InitMessage();
@@ -69,13 +65,12 @@ namespace RoguelikeGame
 
         private static void InitInput()
         {
-            _inputSystem = new InputSystem();
 
-            _rootConsole.Update += (obj, args) => _inputSystem.CheckInput(_rootConsole);
+            _rootConsole.Update += (obj, args) => InputSystem.Instance.CheckInput(_rootConsole);
 
-            _inputSystem.OnUserInput += () => _isDirty = true;
-            _inputSystem.OnUserInput += () => CommandSystem.EndPlayerTurn();
-            _inputSystem.OnUserInput += () =>
+            InputSystem.Instance.OnUserInput += () => _isDirty = true;
+            InputSystem.Instance.OnUserInput += () => CommandSystem.EndPlayerTurn();
+            InputSystem.Instance.OnUserInput += () =>
             {
                 if (!CommandSystem.IsPlayerTurn) {
                     CommandSystem.ActivateMonsters();
@@ -83,24 +78,23 @@ namespace RoguelikeGame
                 }
             };
 
-            _inputSystem.OnUpInput += () => CommandSystem.MovePlayer(Direction.Up);
-            _inputSystem.OnDownInput += () => CommandSystem.MovePlayer(Direction.Down);
-            _inputSystem.OnLeftInput += () => CommandSystem.MovePlayer(Direction.Left);
-            _inputSystem.OnRightInput += () => CommandSystem.MovePlayer(Direction.Right);
-            _inputSystem.OnInteractInput += () =>
+            InputSystem.Instance.OnUpInput += () => CommandSystem.MovePlayer(Direction.Up);
+            InputSystem.Instance.OnDownInput += () => CommandSystem.MovePlayer(Direction.Down);
+            InputSystem.Instance.OnLeftInput += () => CommandSystem.MovePlayer(Direction.Left);
+            InputSystem.Instance.OnRightInput += () => CommandSystem.MovePlayer(Direction.Right);
+            InputSystem.Instance.OnInteractInput += () =>
             {
                 if (DungeonMap.CanMoveDownToNextLevel())
                 {
                     MapGenerator mapGenerator = new MapGenerator(_mapConsole.Width, _mapConsole.Height, 20, 13, 7, ++_mapLevel);
                     DungeonMap = mapGenerator.CreateMap();
-                    MessageLog = new MessageLog();
-                    CommandSystem = new CommandSystem();
+                    //CommandSystem = new CommandSystem();
                     //_rootConsole.Title = $"RougeSharp RLNet Tutorial - Level {_mapLevel}";
                 }
             };
 
 
-            _inputSystem.OnCloseInput += () => _rootConsole.Close();
+            InputSystem.Instance.OnCloseInput += () => _rootConsole.Close();
         }
         private static void InitMap()
         {
@@ -122,14 +116,13 @@ namespace RoguelikeGame
         private static void InitMessage()
         {
             _messageConsole = new SubConsole(80, 11);
-            MessageLog = new MessageLog();
-            MessageLog.Add("The rogue arrives on level 1");
-            MessageLog.Add($"Level created with seed '{RandomProvider.Instance.Seed}'");
+            MessageLog.Instance.Add($"The rogue arrives on level {_mapLevel}");
+            MessageLog.Instance.Add($"Level created with seed '{RandomProvider.Instance.Seed}'");
 
             //Updates
 
             //Draws
-            _messageConsole.OnDraw += (console, root) => MessageLog.Draw(console.console);
+            _messageConsole.OnDraw += (console, root) => MessageLog.Instance.Draw(console.console);
             _messageConsole.OnDraw += (console, root) => console.Blit(root, 0, _screenHeight - 11);
         }
         private static void InitStats()

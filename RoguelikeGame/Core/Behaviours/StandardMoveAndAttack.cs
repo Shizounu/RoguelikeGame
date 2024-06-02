@@ -26,7 +26,7 @@ namespace RoguelikeGame.Core.Behaviours
                 monsterFov.ComputeFov(monster.X, monster.Y, monster.Awareness, true);
                 if (monsterFov.IsInFov(player.X, player.Y))
                 {
-                    Game.MessageLog.Add($"{monster.Name} is eager to fight {player.Name}");
+                    MessageLog.Instance.Add($"{monster.Name} is eager to fight {player.Name}");
                     monster.TurnsAlerted = 1;
                 }
             }
@@ -51,7 +51,7 @@ namespace RoguelikeGame.Core.Behaviours
                     // The monster can see the player, but cannot find a path to him
                     // This could be due to other monsters blocking the way
                     // Add a message to the message log that the monster is waiting
-                    Game.MessageLog.Add($"{monster.Name} waits for a turn");
+                    MessageLog.Instance.Add($"{monster.Name} waits for a turn");
                 }
 
                 // Don't forget to set the walkable status back to false
@@ -67,7 +67,7 @@ namespace RoguelikeGame.Core.Behaviours
                     }
                     catch (NoMoreStepsException)
                     {
-                        Game.MessageLog.Add($"{monster.Name} growls in frustration");
+                        MessageLog.Instance.Add($"{monster.Name} growls in frustration");
                     }
                 }
 

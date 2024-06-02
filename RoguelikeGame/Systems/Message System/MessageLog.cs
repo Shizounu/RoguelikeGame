@@ -1,4 +1,5 @@
 ﻿using RLNET;
+using RoguelikeGame.Interfaces_and_Abstracts;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +10,7 @@ namespace RoguelikeGame.Systems
 {
     // Represents a queue of messages that can be added to
     // Has a method for and drawing to an RLConsole
-    public class MessageLog
+    public class MessageLog : Singleton<MessageLog>
     {
         // Define the maximum number of lines to store
         private static readonly int _maxLines = 9;

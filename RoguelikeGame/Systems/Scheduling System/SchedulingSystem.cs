@@ -1,4 +1,5 @@
 ﻿using RoguelikeGame.Interface;
+using RoguelikeGame.Interfaces_and_Abstracts;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace RoguelikeGame.Systems
 {
-    public class SchedulingSystem
+    public class SchedulingSystem : Singleton<SchedulingSystem>
     {
         private int _time;
         private readonly SortedDictionary<int, List<IScheduleable>> _scheduleables;

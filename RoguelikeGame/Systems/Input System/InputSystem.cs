@@ -1,4 +1,5 @@
 ﻿using RLNET;
+using RoguelikeGame.Interfaces_and_Abstracts;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,7 +11,7 @@ namespace RoguelikeGame.Systems
 {
     public delegate void InputHandler(); 
 
-    public class InputSystem {
+    public class InputSystem : Singleton<InputSystem> {
         
 
         public event InputHandler OnUpInput;

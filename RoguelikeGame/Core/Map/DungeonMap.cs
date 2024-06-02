@@ -20,7 +20,7 @@ namespace RoguelikeGame.Core
 
         public DungeonMap()
         {
-            Game.SchedulingSystem.Clear();
+            SchedulingSystem.Instance.Clear();
             Rooms = new List<Rectangle>();
             Monsters = new List<Monster>();
             Doors = new List<Door>();
@@ -63,7 +63,7 @@ namespace RoguelikeGame.Core
         public void AddPlayer(Player player)
         {
             Game.Player = player;
-            Game.SchedulingSystem.Add(player);
+            SchedulingSystem.Instance.Add(player);
             SetIsWalkable(player.X, player.Y, false);
             UpdatePlayerFieldOfView();
         }
@@ -140,7 +140,7 @@ namespace RoguelikeGame.Core
         public void AddMonster(Monster monster)
         {
             Monsters.Add(monster);
-            Game.SchedulingSystem.Add(monster);
+            SchedulingSystem.Instance.Add(monster);
             // After adding the monster to the map make sure to make the cell not walkable
             SetIsWalkable(monster.X, monster.Y, false);
         }
@@ -184,7 +184,7 @@ namespace RoguelikeGame.Core
         public void RemoveMonster(Monster monster)
         {
             Monsters.Remove(monster);
-            Game.SchedulingSystem.Remove(monster);
+            SchedulingSystem.Instance.Remove(monster);
             // After removing the monster from the map, make sure the cell is walkable again
             SetIsWalkable(monster.X, monster.Y, true);
         }
@@ -211,7 +211,7 @@ namespace RoguelikeGame.Core
                 // Once the door is opened it should be marked as transparent and no longer block field-of-view
                 SetCellProperties(x, y, true, cell.IsWalkable, cell.IsExplored);
 
-                Game.MessageLog.Add($"{actor.Name} opened a door");
+                MessageLog.Instance.Add($"{actor.Name} opened a door");
             }
         }
 
