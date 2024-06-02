@@ -1,4 +1,6 @@
 ﻿using RLNET;
+using RoguelikeGame.Core.Behaviours;
+using RoguelikeGame.Systems;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +11,15 @@ namespace RoguelikeGame.Core
 {
     public class Monster : Actor
     {
+
+        public int? TurnsAlerted { get; set; }
+
+        public virtual void PerformAction(CommandSystem commandSystem)
+        {
+            var behavior = new StandardMoveAndAttack();
+            behavior.Act(this, commandSystem);
+        }
+
         public void DrawStats(RLConsole statConsole, int position)
         {
             // Start at Y=13 which is below the player stats.

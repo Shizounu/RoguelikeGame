@@ -23,6 +23,7 @@ namespace RoguelikeGame.Systems
         public event InputHandler OnUserInput;
 
         public void CheckInput(RLRootConsole rootConsole) {
+
             RLKeyPress keyPress = rootConsole.Keyboard.GetKeyPress();
 
             if (keyPress == null)

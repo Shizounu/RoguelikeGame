@@ -14,6 +14,7 @@ namespace RoguelikeGame.Core
     {
         public List<Rectangle> Rooms = new List<Rectangle>();
         public List<Monster> Monsters = new List<Monster>();
+        public List<Door> Doors = new List<Door>(); 
 
         // The Draw method will be called each time the map is updated
         // It will render all of the symbols/colors for each cell to the map sub console
@@ -24,7 +25,10 @@ namespace RoguelikeGame.Core
                 SetConsoleSymbolForCell(mapConsole, cell);
             foreach (Monster monster in Monsters)
                 monster.Draw(mapConsole, this);
+            foreach (Door door in Doors)
+                door.Draw(mapConsole, this);
             
+
         }
 
         // This method will be called any time we move the player to update field-of-view
@@ -46,6 +50,7 @@ namespace RoguelikeGame.Core
         public void AddPlayer(Player player)
         {
             Game.Player = player;
+            Game.SchedulingSystem.Add(player);
             SetIsWalkable(player.X, player.Y, false);
             UpdatePlayerFieldOfView();
         }
@@ -95,6 +100,8 @@ namespace RoguelikeGame.Core
             {
                 // The cell the actor was previously on is now walkable
                 SetIsWalkable(actor.X, actor.Y, true);
+
+                OpenDoor(actor, x, y);
                 // Update the actor's position
                 actor.X = x;
                 actor.Y = y;
@@ -120,6 +127,7 @@ namespace RoguelikeGame.Core
         public void AddMonster(Monster monster)
         {
             Monsters.Add(monster);
+            Game.SchedulingSystem.Add(monster);
             // After adding the monster to the map make sure to make the cell not walkable
             SetIsWalkable(monster.X, monster.Y, false);
         }
@@ -163,6 +171,7 @@ namespace RoguelikeGame.Core
         public void RemoveMonster(Monster monster)
         {
             Monsters.Remove(monster);
+            Game.SchedulingSystem.Remove(monster);
             // After removing the monster from the map, make sure the cell is walkable again
             SetIsWalkable(monster.X, monster.Y, true);
         }
@@ -170,6 +179,27 @@ namespace RoguelikeGame.Core
         public Monster GetMonsterAt(int x, int y)
         {
             return Monsters.FirstOrDefault(m => m.X == x && m.Y == y);
+        }
+
+        // Return the door at the x,y position or null if one is not found.
+        public Door GetDoor(int x, int y)
+        {
+            return Doors.SingleOrDefault(d => d.X == x && d.Y == y);
+        }
+
+        // The actor opens the door located at the x,y position
+        private void OpenDoor(Actor actor, int x, int y)
+        {
+            Door door = GetDoor(x, y);
+            if (door != null && !door.IsOpen)
+            {
+                door.IsOpen = true;
+                var cell = GetCell(x, y);
+                // Once the door is opened it should be marked as transparent and no longer block field-of-view
+                SetCellProperties(x, y, true, cell.IsWalkable, cell.IsExplored);
+
+                Game.MessageLog.Add($"{actor.Name} opened a door");
+            }
         }
     }
 }

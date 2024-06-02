@@ -9,8 +9,17 @@ using System.Threading.Tasks;
 
 namespace RoguelikeGame.Core
 {
-    public class Actor : IActor, IDrawable
+    public class Actor : IActor, IDrawable, IScheduleable
     {
+
+        public int Time
+        {
+            get
+            {
+                return Speed;
+            }
+        }
+
         // IActor
         private int _attack;
         private int _attackChance;

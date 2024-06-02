@@ -54,11 +54,16 @@
   <ItemGroup>
     <Compile Include="Core\Actors\Actor.cs" />
     <Compile Include="Core\Actors\Kobold.cs" />
+    <Compile Include="Core\Behaviours\StandardMoveAndAttack.cs" />
     <Compile Include="Core\Color\Color.cs" />
     <Compile Include="Core\Direction.cs" />
+    <Compile Include="Core\Door.cs" />
     <Compile Include="Core\DungeonMap.cs" />
     <Compile Include="Core\Actors\Monster.cs" />
     <Compile Include="Core\Actors\Player.cs" />
+    <Compile Include="Interface\IBehaviour.cs" />
+    <Compile Include="Interface\ISchedulable.cs" />
+    <Compile Include="Systems\SchedulingSystem.cs" />
     <Compile Include="Systems\SubConsole.cs" />
     <Compile Include="Interface\IActor.cs" />
     <Compile Include="Interface\IDrawable.cs" />

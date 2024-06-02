@@ -18,7 +18,7 @@ namespace RoguelikeGame
 
     public class Game
     {
-        private static bool _isDirty = true; 
+        public static bool _isDirty = true; 
 
 
         // The screen height and width are in number of tiles
@@ -36,6 +36,7 @@ namespace RoguelikeGame
         public static CommandSystem CommandSystem;
         public static DungeonMap DungeonMap;
         public static MessageLog MessageLog;
+        public static SchedulingSystem SchedulingSystem;
 
         private const string fontFileName = "terminal8x8.png";
         private const string consoleTitle = "Roguesharp Roguelike";
@@ -44,7 +45,7 @@ namespace RoguelikeGame
             
             _rootConsole = new RLRootConsole(fontFileName, _screenWidth, _screenHeight, 8, 8, 1f, consoleTitle);
             CommandSystem = new CommandSystem();
-
+            SchedulingSystem = new SchedulingSystem();
 
             InitMap();
             InitMessage();
@@ -71,6 +72,14 @@ namespace RoguelikeGame
             _rootConsole.Update += (obj, args) => _inputSystem.CheckInput(_rootConsole);
 
             _inputSystem.OnUserInput += () => _isDirty = true;
+            _inputSystem.OnUserInput += () => CommandSystem.EndPlayerTurn();
+            _inputSystem.OnUserInput += () =>
+            {
+                if (!CommandSystem.IsPlayerTurn) {
+                    CommandSystem.ActivateMonsters();
+                    _isDirty = true;
+                }
+            };
 
             _inputSystem.OnUpInput += () => CommandSystem.MovePlayer(Direction.Up);
             _inputSystem.OnDownInput += () => CommandSystem.MovePlayer(Direction.Down);
