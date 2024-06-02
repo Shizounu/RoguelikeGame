@@ -21,7 +21,7 @@ namespace RoguelikeGame.Core
         private readonly DungeonMap _map;
 
         // Constructing a new MapGenerator requires the dimensions of the maps it will create
-        public MapGenerator(int width, int height, int maxRooms, int roomMaxSize, int roomMinSize)
+        public MapGenerator(int width, int height, int maxRooms, int roomMaxSize, int roomMinSize, int mapLevel)
         {
             _width = width;
             _height = height;
@@ -64,10 +64,8 @@ namespace RoguelikeGame.Core
             // Iterate through each room that we wanted placed 
             // call CreateRoom to make it
             foreach (Rectangle room in _map.Rooms)
-            {
                 CreateRoom(room);
-                
-            }
+            
 
             // Iterate through each room that was generated
             // Don't do anything with the first room, so start at r = 1 instead of r = 0
@@ -93,10 +91,9 @@ namespace RoguelikeGame.Core
             }
 
             foreach (Rectangle room in _map.Rooms)
-            {
                 CreateDoors(room);
 
-            }
+            CreateStairs();
 
 
             PlacePlayer();
@@ -247,6 +244,22 @@ namespace RoguelikeGame.Core
                 return true;
             }
             return false;
+        }
+
+        private void CreateStairs()
+        {
+            _map.StairsUp = new Stairs
+            {
+                X = _map.Rooms.First().Center.X + 1,
+                Y = _map.Rooms.First().Center.Y,
+                IsUp = true
+            };
+            _map.StairsDown = new Stairs
+            {
+                X = _map.Rooms.Last().Center.X,
+                Y = _map.Rooms.Last().Center.Y,
+                IsUp = false
+            };
         }
     }
 }

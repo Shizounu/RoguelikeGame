@@ -17,6 +17,7 @@ namespace RoguelikeGame.Systems
         public event InputHandler OnDownInput;
         public event InputHandler OnLeftInput;
         public event InputHandler OnRightInput;
+        public event InputHandler OnInteractInput;
 
         public event InputHandler OnCloseInput;
 
@@ -50,6 +51,13 @@ namespace RoguelikeGame.Systems
                     OnRightInput?.Invoke();
                     OnUserInput?.Invoke();
                     break;
+
+                case RLKey.Period:
+                case RLKey.Q: 
+                    OnInteractInput?.Invoke();
+                    OnUserInput.Invoke();
+                    break;
+
 
                 case RLKey.Escape:
                     OnCloseInput?.Invoke();

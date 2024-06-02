@@ -14,7 +14,18 @@ namespace RoguelikeGame.Core
     {
         public List<Rectangle> Rooms = new List<Rectangle>();
         public List<Monster> Monsters = new List<Monster>();
-        public List<Door> Doors = new List<Door>(); 
+        public List<Door> Doors = new List<Door>();
+        public Stairs StairsUp { get; set; }
+        public Stairs StairsDown { get; set; }
+
+        public DungeonMap()
+        {
+            Game.SchedulingSystem.Clear();
+            Rooms = new List<Rectangle>();
+            Monsters = new List<Monster>();
+            Doors = new List<Door>();
+
+        }
 
         // The Draw method will be called each time the map is updated
         // It will render all of the symbols/colors for each cell to the map sub console
@@ -27,7 +38,9 @@ namespace RoguelikeGame.Core
                 monster.Draw(mapConsole, this);
             foreach (Door door in Doors)
                 door.Draw(mapConsole, this);
-            
+
+            StairsUp.Draw(mapConsole, this);
+            StairsDown.Draw(mapConsole, this);
 
         }
 
@@ -200,6 +213,12 @@ namespace RoguelikeGame.Core
 
                 Game.MessageLog.Add($"{actor.Name} opened a door");
             }
+        }
+
+        public bool CanMoveDownToNextLevel()
+        {
+            Player player = Game.Player;
+            return StairsDown.X == player.X && StairsDown.Y == player.Y;
         }
     }
 }

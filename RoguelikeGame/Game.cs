@@ -38,6 +38,8 @@ namespace RoguelikeGame
         public static MessageLog MessageLog;
         public static SchedulingSystem SchedulingSystem;
 
+        private static int _mapLevel = 1;
+
         private const string fontFileName = "terminal8x8.png";
         private const string consoleTitle = "Roguesharp Roguelike";
         public void Init()
@@ -85,6 +87,18 @@ namespace RoguelikeGame
             _inputSystem.OnDownInput += () => CommandSystem.MovePlayer(Direction.Down);
             _inputSystem.OnLeftInput += () => CommandSystem.MovePlayer(Direction.Left);
             _inputSystem.OnRightInput += () => CommandSystem.MovePlayer(Direction.Right);
+            _inputSystem.OnInteractInput += () =>
+            {
+                if (DungeonMap.CanMoveDownToNextLevel())
+                {
+                    MapGenerator mapGenerator = new MapGenerator(_mapConsole.Width, _mapConsole.Height, 20, 13, 7, ++_mapLevel);
+                    DungeonMap = mapGenerator.CreateMap();
+                    MessageLog = new MessageLog();
+                    CommandSystem = new CommandSystem();
+                    //_rootConsole.Title = $"RougeSharp RLNet Tutorial - Level {_mapLevel}";
+                }
+            };
+
 
             _inputSystem.OnCloseInput += () => _rootConsole.Close();
         }
@@ -92,7 +106,7 @@ namespace RoguelikeGame
         {
             _mapConsole = new SubConsole(80, 48);
 
-            MapGenerator mapGenerator = new MapGenerator(_mapConsole.Width, _mapConsole.Height, 20, 13, 7);
+            MapGenerator mapGenerator = new MapGenerator(_mapConsole.Width, _mapConsole.Height, 20, 13, 7, _mapLevel);
             DungeonMap = mapGenerator.CreateMap();
 
             //Update Calls

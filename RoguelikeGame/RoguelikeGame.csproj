@@ -61,6 +61,7 @@
     <Compile Include="Core\DungeonMap.cs" />
     <Compile Include="Core\Actors\Monster.cs" />
     <Compile Include="Core\Actors\Player.cs" />
+    <Compile Include="Core\Stairs.cs" />
     <Compile Include="Interface\IBehaviour.cs" />
     <Compile Include="Interface\ISchedulable.cs" />
     <Compile Include="Systems\SchedulingSystem.cs" />
