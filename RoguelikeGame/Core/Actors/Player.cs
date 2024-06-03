@@ -25,6 +25,23 @@ namespace RoguelikeGame.Core
             Symbol = '@';
         }
 
+        public void AddGold(int Amount) {
+            Gold += Amount;
+        }
+        public bool CanPay(int Amount) {
+            return Gold >= Amount;
+        }
+        public void RemoveGold(int Amount) {
+            Gold -= Amount; 
+        }
+        public bool RemoveGoldIfAble(int Amount) {
+            if(CanPay(Amount)) { 
+                RemoveGold(Amount);
+                return true;
+            }
+            return false;   
+        }
+
         public void DrawStats(RLConsole statConsole)
         {
             statConsole.Print(1, 1, $"Name:    {Name}", Colors.Text);

@@ -23,8 +23,7 @@ namespace RoguelikeGame.Core
             SchedulingSystem.Instance.Clear();
             Rooms = new List<Rectangle>();
             Monsters = new List<Monster>();
-            Doors = new List<Door>();
-
+            Doors = new List<Door>();  
         }
 
         #region Drawing
@@ -41,8 +40,6 @@ namespace RoguelikeGame.Core
                 door.Draw(mapConsole, this);
             foreach (IInteractable interactable in interactables) 
                 interactable.Draw(mapConsole, this);
-
-
         }
 
         private void SetConsoleSymbolForCell(RLConsole console, Cell cell)

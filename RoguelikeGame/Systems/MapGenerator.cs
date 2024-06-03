@@ -95,7 +95,6 @@ namespace RoguelikeGame.Core
 
             CreateStairs();
 
-
             PlacePlayer();
 
             PlaceMonsters();

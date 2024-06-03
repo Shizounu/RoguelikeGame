@@ -106,7 +106,11 @@ namespace RoguelikeGame
 
             //Update Calls
             _mapConsole.OnUpdate += (console, root) => DungeonMap.UpdatePlayerFieldOfView();
-
+            _mapConsole.OnUpdate += (console, root) =>
+            {
+                if(Player.Health <= 0)
+                    _rootConsole.Close();
+            };
             //Draw Calls
             _mapConsole.OnDraw += (console, root) => DungeonMap.Draw(console.console);
             _mapConsole.OnDraw += (console, root) => Player.Draw(console.console, DungeonMap);
