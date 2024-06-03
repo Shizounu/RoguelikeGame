@@ -1,6 +1,9 @@
 ﻿using RLNET;
 using RoguelikeGame.Core.Behaviours;
+using RoguelikeGame.Core.Map;
+using RoguelikeGame.Interfaces_and_Abstracts;
 using RoguelikeGame.Systems;
+using RogueSharp.DiceNotation;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,7 +14,6 @@ namespace RoguelikeGame.Core
 {
     public class Monster : Actor
     {
-
         public int? TurnsAlerted { get; set; }
 
         public virtual void PerformAction(CommandSystem commandSystem)
@@ -39,6 +41,21 @@ namespace RoguelikeGame.Core
 
             // Print the monsters name over top of the health bar
             statConsole.Print(2, yPosition, $": {Name}", Palette.DbLight);
+        }
+
+        public virtual void DoDrops(DungeonMap map) {
+            if(Gold > 0)
+            {
+                GoldPile goldPile = new GoldPile
+                {
+                    X = this.X,
+                    Y = this.Y,
+                    Amount = Gold
+                };
+
+                
+                map.AddInteractable(goldPile);
+            }
         }
     }
 }

@@ -122,17 +122,10 @@ namespace RoguelikeGame.Systems
             }
             else if (defender is Monster)
             {
+                ((Monster)defender).DoDrops(Game.GetActiveMap());
                 Game.GetActiveMap().RemoveMonster((Monster)defender);
-
                 MessageLog.Instance.Add($"{defender.Name} died and dropped {defender.Gold} gold");
-                Game.GetActiveMap().AddInteractable(
-                    new GoldPile
-                    {
-                        X = defender.X,
-                        Y = defender.Y,
-                        Amount = defender.Gold
-                    }
-                );
+                
             }
         }
 

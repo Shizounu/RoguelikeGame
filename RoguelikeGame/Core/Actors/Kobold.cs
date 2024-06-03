@@ -1,4 +1,6 @@
-﻿using RogueSharp.DiceNotation;
+﻿using RoguelikeGame.Core.Map;
+using RoguelikeGame.Systems;
+using RogueSharp.DiceNotation;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,6 +13,8 @@ namespace RoguelikeGame.Core.Actors
     {
         public static Kobold Create(int level)
         {
+            
+
             int health = Dice.Roll("2D5");
             return new Kobold
             {
