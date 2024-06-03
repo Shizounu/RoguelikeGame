@@ -10,8 +10,8 @@ namespace RoguelikeGame.Interface
 {
     public interface IDrawable
     {
-        RLColor Color { get; set; }
-        char Symbol { get; set; }
+        RLColor Color { get; }
+        char Symbol { get; }
         int X { get; set; }
         int Y { get; set; }
 

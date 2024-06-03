@@ -1,4 +1,5 @@
 ﻿using RoguelikeGame.Core;
+using RoguelikeGame.Core.Map;
 using RoguelikeGame.Interface;
 using RoguelikeGame.Interfaces_and_Abstracts;
 using RogueSharp;
@@ -121,9 +122,17 @@ namespace RoguelikeGame.Systems
             }
             else if (defender is Monster)
             {
-                Game.DungeonMap.RemoveMonster((Monster)defender);
+                Game.GetActiveMap().RemoveMonster((Monster)defender);
 
-                MessageLog.Instance.Add($"  {defender.Name} died and dropped {defender.Gold} gold");
+                MessageLog.Instance.Add($"{defender.Name} died and dropped {defender.Gold} gold");
+                Game.GetActiveMap().AddInteractable(
+                    new GoldPile
+                    {
+                        X = defender.X,
+                        Y = defender.Y,
+                        Amount = defender.Gold
+                    }
+                );
             }
         }
 
@@ -162,7 +171,7 @@ namespace RoguelikeGame.Systems
                     }
             }
 
-            Monster monster = Game.DungeonMap.GetMonsterAt(x, y);
+            Monster monster = Game.GetActiveMap().GetMonsterAt(x, y);
 
             if (monster != null)
             {
@@ -170,7 +179,7 @@ namespace RoguelikeGame.Systems
                 return true;
             }
 
-            if (Game.DungeonMap.SetActorPosition(Game.Player, x, y))
+            if (Game.GetActiveMap().SetActorPosition(Game.Player, x, y))
             {
                 return true;
             }
@@ -187,11 +196,11 @@ namespace RoguelikeGame.Systems
 
         public void ActivateMonsters()
         {
-            IScheduleable scheduleable = SchedulingSystem.Instance.Get();
+            IScheduleable scheduleable = Game.GetActiveMap().SchedulingSystem.Get();
             if (scheduleable is Player)
             {
                 IsPlayerTurn = true;
-                SchedulingSystem.Instance.Add(Game.Player);
+                Game.GetActiveMap().SchedulingSystem.Add(Game.Player);
             }
             else
             {
@@ -200,7 +209,7 @@ namespace RoguelikeGame.Systems
                 if (monster != null)
                 {
                     monster.PerformAction(this);
-                    SchedulingSystem.Instance.Add(monster);
+                    Game.GetActiveMap().SchedulingSystem.Add(monster);
                 }
 
                 ActivateMonsters();
@@ -209,7 +218,7 @@ namespace RoguelikeGame.Systems
 
         public void MoveMonster(Monster monster, Cell cell)
         {
-            if (!Game.DungeonMap.SetActorPosition(monster, cell.X, cell.Y))
+            if (!Game.GetActiveMap().SetActorPosition(monster, cell.X, cell.Y))
             {
                 if (Game.Player.X == cell.X && Game.Player.Y == cell.Y)
                 {

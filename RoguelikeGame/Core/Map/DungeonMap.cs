@@ -11,16 +11,17 @@ using System.Threading.Tasks;
 namespace RoguelikeGame.Core
 {
     // Our custom DungeonMap class extends the base RogueSharp Map class
-    public class DungeonMap : Map
+    public class DungeonMap : RogueSharp.Map
     {
         public List<Rectangle> Rooms = new List<Rectangle>();
         public List<Monster> Monsters = new List<Monster>();
         public List<Door> Doors = new List<Door>();
         public List<IInteractable> interactables = new List<IInteractable>();
+        public SchedulingSystem SchedulingSystem; 
 
         public DungeonMap()
         {
-            SchedulingSystem.Instance.Clear();
+            SchedulingSystem = new SchedulingSystem();
             Rooms = new List<Rectangle>();
             Monsters = new List<Monster>();
             Doors = new List<Door>();  
@@ -153,7 +154,7 @@ namespace RoguelikeGame.Core
         public void RemoveMonster(Monster monster)
         {
             Monsters.Remove(monster);
-            SchedulingSystem.Instance.Remove(monster);
+            SchedulingSystem.Remove(monster);
             // After removing the monster from the map, make sure the cell is walkable again
             SetIsWalkable(monster.X, monster.Y, true);
         }
@@ -176,18 +177,35 @@ namespace RoguelikeGame.Core
 
         #region Instatiators
         // Called by MapGenerator after we generate a new map to add the player to the map
-        public void AddPlayer(Player player)
+        public void AddPlayer(Player player, bool Descending)
         {
+            if (Descending) //is the player descending
+            {
+                player.X = Rooms.First().Center.X;
+                player.Y = Rooms.First().Center.Y;
+            }
+            else // Ascending
+            {
+                player.X = Rooms.Last().Center.X;
+                player.Y = Rooms.Last().Center.Y;
+            }
+
+
             Game.Player = player;
-            SchedulingSystem.Instance.Add(player);
+            SchedulingSystem.Add(player);
             SetIsWalkable(player.X, player.Y, false);
             UpdatePlayerFieldOfView();
+        }
+        public void RemovePlayer(Player player)
+        {
+            SchedulingSystem.Remove(player);
+            SetIsWalkable(player.X, player.Y, true);
         }
 
         public void AddMonster(Monster monster)
         {
             Monsters.Add(monster);
-            SchedulingSystem.Instance.Add(monster);
+            SchedulingSystem.Add(monster);
             // After adding the monster to the map make sure to make the cell not walkable
             SetIsWalkable(monster.X, monster.Y, false);
         }

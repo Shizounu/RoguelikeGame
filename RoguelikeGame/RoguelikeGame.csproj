@@ -61,6 +61,7 @@
     <Compile Include="Core\Map\DungeonMap.cs" />
     <Compile Include="Core\Actors\Monster.cs" />
     <Compile Include="Core\Actors\Player.cs" />
+    <Compile Include="Core\Map\GoldPile.cs" />
     <Compile Include="Core\Map\Stairs.cs" />
     <Compile Include="Interfaces and Abstracts\IBehaviour.cs" />
     <Compile Include="Interfaces and Abstracts\IInteractable.cs" />

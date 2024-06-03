@@ -13,7 +13,7 @@ namespace RoguelikeGame.Core.Behaviours
     {
         public bool Act(Monster monster, CommandSystem commandSystem)
         {
-            DungeonMap dungeonMap = Game.DungeonMap;
+            DungeonMap dungeonMap = Game.GetActiveMap();
             Player player = Game.Player;
             FieldOfView monsterFov = new FieldOfView(dungeonMap);
 

@@ -25,6 +25,8 @@ namespace RoguelikeGame.Core
             Symbol = '@';
         }
 
+        public int CurrentLayer = 1;
+
         public void AddGold(int Amount) {
             Gold += Amount;
         }

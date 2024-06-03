@@ -10,31 +10,14 @@ using System.Threading.Tasks;
 
 namespace RoguelikeGame.Core
 {
-    public class MapGenerator
+    public static class MapGenerator
     {
-        private readonly int _width;
-        private readonly int _height;
-        private readonly int _maxRooms;
-        private readonly int _roomMaxSize;
-        private readonly int _roomMinSize;
-
-        private readonly DungeonMap _map;
-
-        // Constructing a new MapGenerator requires the dimensions of the maps it will create
-        public MapGenerator(int width, int height, int maxRooms, int roomMaxSize, int roomMinSize, int mapLevel)
-        {
-            _width = width;
-            _height = height;
-            _maxRooms = maxRooms;
-            _roomMaxSize = roomMaxSize;
-            _roomMinSize = roomMinSize;
-            _map = new DungeonMap();
-        }
-
         // Generate a new map that is a simple open floor with walls around the outside
         // Generate a new map that places rooms randomly
-        public DungeonMap CreateMap()
+        public static DungeonMap CreateMap(int _width, int _height, int _maxRooms, int _roomMinSize, int _roomMaxSize, int _mapLayer, bool Descending)
         {
+            DungeonMap _map = new DungeonMap();
+
             // Set the properties of all cells to false
             _map.Initialize(_width, _height);
 
@@ -64,7 +47,7 @@ namespace RoguelikeGame.Core
             // Iterate through each room that we wanted placed 
             // call CreateRoom to make it
             foreach (Rectangle room in _map.Rooms)
-                CreateRoom(room);
+                CreateRoom(_map, room);
             
 
             // Iterate through each room that was generated
@@ -80,31 +63,31 @@ namespace RoguelikeGame.Core
                 // Give a 50/50 chance of which 'L' shaped connecting hallway to tunnel out
                 if (RandomProvider.Instance.Provider.Next(1, 2) == 1)
                 {
-                    CreateHorizontalTunnel(previousRoomCenterX, currentRoomCenterX, previousRoomCenterY);
-                    CreateVerticalTunnel(previousRoomCenterY, currentRoomCenterY, currentRoomCenterX);
+                    CreateHorizontalTunnel(_map, previousRoomCenterX, currentRoomCenterX, previousRoomCenterY);
+                    CreateVerticalTunnel(_map, previousRoomCenterY, currentRoomCenterY, currentRoomCenterX);
                 }
                 else
                 {
-                    CreateVerticalTunnel(previousRoomCenterY, currentRoomCenterY, previousRoomCenterX);
-                    CreateHorizontalTunnel(previousRoomCenterX, currentRoomCenterX, currentRoomCenterY);
+                    CreateVerticalTunnel(_map, previousRoomCenterY, currentRoomCenterY, previousRoomCenterX);
+                    CreateHorizontalTunnel(_map, previousRoomCenterX, currentRoomCenterX, currentRoomCenterY);
                 }
             }
 
             foreach (Rectangle room in _map.Rooms)
-                CreateDoors(room);
+                CreateDoors(_map, room);
 
-            CreateStairs();
+            CreateStairs(_map, _mapLayer);
 
-            PlacePlayer();
+            PlacePlayer(_map, Descending);
 
-            PlaceMonsters();
+            PlaceMonsters(_map, _mapLayer);
 
             return _map;
         }
 
         // Given a rectangular area on the map
         // set the cell properties for that area to true
-        private void CreateRoom(Rectangle room)
+        private static void CreateRoom(DungeonMap _map, Rectangle room)
         {
             for (int x = room.Left + 1; x < room.Right; x++)
             {
@@ -116,7 +99,7 @@ namespace RoguelikeGame.Core
         }
 
         // Carve a tunnel out of the map parallel to the x-axis
-        private void CreateHorizontalTunnel(int xStart, int xEnd, int yPosition)
+        private static void CreateHorizontalTunnel(DungeonMap _map,int xStart, int xEnd, int yPosition)
         {
             for (int x = Math.Min(xStart, xEnd); x <= Math.Max(xStart, xEnd); x++)
             {
@@ -125,7 +108,7 @@ namespace RoguelikeGame.Core
         }
 
         // Carve a tunnel out of the map parallel to the y-axis
-        private void CreateVerticalTunnel(int yStart, int yEnd, int xPosition)
+        private static void CreateVerticalTunnel(DungeonMap _map, int yStart, int yEnd, int xPosition)
         {
             for (int y = Math.Min(yStart, yEnd); y <= Math.Max(yStart, yEnd); y++)
             {
@@ -134,27 +117,25 @@ namespace RoguelikeGame.Core
         }
 
         // Find the center of the first room that we created and place the Player there
-        private void PlacePlayer()
+        private static void PlacePlayer(DungeonMap _map, bool Descending)
         {
             Player player = Game.Player;
             if (player == null)
                 player = new Player();
 
-            player.X = _map.Rooms[0].Center.X;
-            player.Y = _map.Rooms[0].Center.Y;
-
-            _map.AddPlayer(player);
+            _map.AddPlayer(player, Descending);
         }
 
-        private void PlaceMonsters()
+        private static void PlaceMonsters(DungeonMap _map, int Layer)
         {
+            int Threshhold = 7 - Math.Max(0, Layer - 3);
             foreach (var room in _map.Rooms)
             {
                 // Each room has a 60% chance of having monsters
-                if (Dice.Roll("1D10") < 7)
+                if (Dice.Roll("1D10") < Threshhold)
                 {
                     // Generate between 1 and 4 monsters
-                    var numberOfMonsters = Dice.Roll("1D4");
+                    var numberOfMonsters = Dice.Roll($"1D{Math.Max(1, Layer)}");
                     for (int i = 0; i < numberOfMonsters; i++)
                     {
                         // Find a random walkable location in the room to place the monster
@@ -174,7 +155,7 @@ namespace RoguelikeGame.Core
             }
         }
 
-        private void CreateDoors(Rectangle room)
+        private static void CreateDoors(DungeonMap _map, Rectangle room)
         {
             // The the boundries of the room
             int xMin = room.Left;
@@ -191,7 +172,7 @@ namespace RoguelikeGame.Core
             // Go through each of the rooms border cells and look for locations to place doors.
             foreach (ICell cell in borderCells)
             {
-                if (IsPotentialDoor(cell))
+                if (IsPotentialDoor(_map, cell))
                 {
                     // A door must block field-of-view when it is closed.
                     _map.SetCellProperties(cell.X, cell.Y, false, true);
@@ -206,7 +187,7 @@ namespace RoguelikeGame.Core
         }
 
         // Checks to see if a cell is a good candidate for placement of a door
-        private bool IsPotentialDoor(ICell cell)
+        private static bool IsPotentialDoor(DungeonMap _map, ICell cell)
         {
             // If the cell is not walkable
             // then it is a wall and not a good place for a door
@@ -245,19 +226,21 @@ namespace RoguelikeGame.Core
             return false;
         }
 
-        private void CreateStairs()
+        private static void CreateStairs(DungeonMap _map, int CurLayer)
         {
             _map.AddInteractable(new Stairs
             {
                 X = _map.Rooms.First().Center.X + 1,
                 Y = _map.Rooms.First().Center.Y,
-                IsUp = true
+                Symbol = '<',
+                TargetLayer = CurLayer - 1
             });
             _map.AddInteractable( new Stairs
             {
                 X = _map.Rooms.Last().Center.X,
                 Y = _map.Rooms.Last().Center.Y,
-                IsUp = false
+                Symbol = '>',
+                TargetLayer = CurLayer + 1
             });
         }
     }

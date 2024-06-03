@@ -36,9 +36,7 @@ namespace RoguelikeGame
 
         public static Player Player;
         public static CommandSystem CommandSystem;
-        public static DungeonMap DungeonMap;
-
-        public static int _mapLevel = 1;
+        public static Dictionary<int, DungeonMap> GeneratedMaps;
 
         private const string fontFileName = "terminal8x8.png";
         private const string consoleTitle = "Roguesharp Roguelike";
@@ -47,6 +45,7 @@ namespace RoguelikeGame
             
             _rootConsole = new RLRootConsole(fontFileName, _screenWidth, _screenHeight, 8, 8, 1f, consoleTitle);
             CommandSystem = new CommandSystem();
+            GeneratedMaps = new Dictionary<int, DungeonMap>();
 
             InitMap();
             InitMessage();
@@ -87,7 +86,7 @@ namespace RoguelikeGame
             InputSystem.Instance.OnRightInput += () => CommandSystem.MovePlayer(Direction.Right);
             InputSystem.Instance.OnInteractInput += () =>
             {
-                List<IInteractable> interactables = DungeonMap.GetInteractablesAt(Player.X, Player.Y);
+                List<IInteractable> interactables = GetActiveMap().GetInteractablesAt(Player.X, Player.Y);
                 if(interactables.Count > 0)
                 {
                     interactables.First().Interact();
@@ -101,19 +100,18 @@ namespace RoguelikeGame
         {
             _mapConsole = new SubConsole(80, 48);
 
-            MapGenerator mapGenerator = new MapGenerator(_mapConsole.Width, _mapConsole.Height, 20, 13, 7, _mapLevel);
-            DungeonMap = mapGenerator.CreateMap();
+            GetMap(1, true);
 
             //Update Calls
-            _mapConsole.OnUpdate += (console, root) => DungeonMap.UpdatePlayerFieldOfView();
+            _mapConsole.OnUpdate += (console, root) => GetActiveMap().UpdatePlayerFieldOfView();
             _mapConsole.OnUpdate += (console, root) =>
             {
                 if(Player.Health <= 0)
                     _rootConsole.Close();
             };
             //Draw Calls
-            _mapConsole.OnDraw += (console, root) => DungeonMap.Draw(console.console);
-            _mapConsole.OnDraw += (console, root) => Player.Draw(console.console, DungeonMap);
+            _mapConsole.OnDraw += (console, root) => GetActiveMap().Draw(console.console);
+            _mapConsole.OnDraw += (console, root) => Player.Draw(console.console, GetActiveMap());
 
 
             _mapConsole.OnDraw += (console, root) => console.Blit(root, 0, 11);
@@ -121,7 +119,7 @@ namespace RoguelikeGame
         private static void InitMessage()
         {
             _messageConsole = new SubConsole(80, 11);
-            MessageLog.Instance.Add($"The rogue arrives on level {_mapLevel}");
+            MessageLog.Instance.Add($"The rogue arrives on level {Player.CurrentLayer}");
             MessageLog.Instance.Add($"Level created with seed '{RandomProvider.Instance.Seed}'");
 
             //Updates
@@ -142,8 +140,8 @@ namespace RoguelikeGame
 
             _statConsole.OnDraw += (console, root) => {
                 int i = 0;
-                foreach (var Monster in DungeonMap.Monsters) {
-                    if(DungeonMap.IsInFov(Monster.X, Monster.Y))
+                foreach (var Monster in GetActiveMap().Monsters) {
+                    if(GetActiveMap().IsInFov(Monster.X, Monster.Y))
                     {
                         Monster.DrawStats(console.console, i);
                         i++;
@@ -165,6 +163,18 @@ namespace RoguelikeGame
             _inventoryConsole.OnDraw += (console, root) => console.Blit(root, 0, 0);
         }
 
+
+        public static DungeonMap GetMap(int Layer, bool Descending) {
+            if(GeneratedMaps.ContainsKey(Layer)) 
+                return GeneratedMaps[Layer];
+
+            DungeonMap map = MapGenerator.CreateMap(_mapConsole.Width, _mapConsole.Height, 20, 7, 13, Layer, Descending);
+            GeneratedMaps.Add(Layer, map);
+            return map;
+        }
+        public static DungeonMap GetActiveMap() {
+            return GeneratedMaps[Player.CurrentLayer];
+        }
 
 
         private void OnRootConsoleUpdate(object sender, UpdateEventArgs e)
