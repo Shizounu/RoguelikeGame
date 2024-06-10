@@ -1,4 +1,5 @@
 ﻿using RLNET;
+using RoguelikeGame.Core.Inventory_System;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,6 +28,7 @@ namespace RoguelikeGame.Core
 
         public int CurrentLayer = 1;
 
+        #region Gold Managment
         public void AddGold(int Amount) {
             Gold += Amount;
         }
@@ -43,6 +45,11 @@ namespace RoguelikeGame.Core
             }
             return false;   
         }
+        #endregion
+
+        #region Inventory
+        public List<IItem> Items; 
+        #endregion
 
         public void DrawStats(RLConsole statConsole)
         {

@@ -52,6 +52,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Core\Inventory System\IItem.cs" />
+    <Compile Include="Core\Inventory System\ItemType.cs" />
     <Compile Include="Core\Map\Actors\Actor.cs" />
     <Compile Include="Core\Map\Actors\Kobold.cs" />
     <Compile Include="Core\Command System\Behaviours\StandardMoveAndAttack.cs" />
@@ -75,7 +77,7 @@
     <Compile Include="Core\Input System\InputSystem.cs" />
     <Compile Include="Core\Map\MapGenerator.cs" />
     <Compile Include="Core\Color\Palette.cs" />
-    <Compile Include="Game.cs" />
+    <Compile Include="Core\Game.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Core\Message System\MessageLog.cs" />
     <Compile Include="Core\Misc\RandomProvider.cs" />

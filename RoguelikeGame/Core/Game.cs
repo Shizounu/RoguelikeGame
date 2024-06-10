@@ -48,8 +48,8 @@ namespace RoguelikeGame
             GeneratedMaps = new Dictionary<int, DungeonMap>();
 
             InitMap();
-            InitMessage();
             InitStats();
+            InitMessage();
             InitInventory();
 
             InitInput();
@@ -156,10 +156,11 @@ namespace RoguelikeGame
             _inventoryConsole = new SubConsole(80, 11);
 
             //Update
-            _inventoryConsole.OnUpdate += (console, root) => _inventoryConsole.SetBackgroundColor(RLColor.Cyan);
-            _inventoryConsole.OnUpdate += (console, root) => console.console.Print(1, 1, "Inventory", RLColor.White);
 
             //Draw
+            _inventoryConsole.OnDraw += (console, root) => _inventoryConsole.SetBackgroundColor(RLColor.Cyan);
+            _inventoryConsole.OnDraw += (console, root) => console.console.Print(1, 1, "Inventory", RLColor.White);
+
             _inventoryConsole.OnDraw += (console, root) => console.Blit(root, 0, 0);
         }
 
@@ -179,23 +180,21 @@ namespace RoguelikeGame
 
         private void OnRootConsoleUpdate(object sender, UpdateEventArgs e)
         {
-            _mapConsole.Update(_rootConsole);
-            _messageConsole.Update(_rootConsole);
-            _statConsole.Update(_rootConsole);
-            _inventoryConsole.Update(_rootConsole);
+            _mapConsole?.Update(_rootConsole);
+            _messageConsole?.Update(_rootConsole);
+            _statConsole?.Update(_rootConsole);
+            _inventoryConsole?.Update(_rootConsole);
         }
         private void OnRootConsoleRender(object sender, UpdateEventArgs e)
         {
             if (!_isDirty)
                 return;
 
-            // Blit the sub consoles to the root console in the correct locations
-            _mapConsole.Draw(_rootConsole);
-            _messageConsole.Draw(_rootConsole);
-            _statConsole.Draw(_rootConsole);
-            _inventoryConsole.Draw(_rootConsole);
+            _mapConsole?.Draw(_rootConsole);
+            _messageConsole?.Draw(_rootConsole);
+            _statConsole?.Draw(_rootConsole);
+            _inventoryConsole?.Draw(_rootConsole);
 
-            // Tell RLNET to draw the console that we set
             _rootConsole.Draw();
 
             _isDirty = true;
