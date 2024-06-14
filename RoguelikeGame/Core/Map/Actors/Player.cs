@@ -48,7 +48,31 @@ namespace RoguelikeGame.Core
         #endregion
 
         #region Inventory
-        public List<IItem> Items; 
+        private Dictionary<string, ItemCountPair> Items; 
+
+        public void AddItem(IItem item) {
+            if(Items == null) 
+                Items = new Dictionary<string, ItemCountPair>();
+            
+            if(!Items.ContainsKey(item.Name))
+                Items.Add(item.Name, new ItemCountPair(item, 0));
+            Items[item.Name].count += 1;
+        }
+        public bool RemoveItem(IItem item) {
+            if(Items == null)
+                return false;
+
+            if(!Items.ContainsKey(item.Name))
+                return false;
+
+            if(Items[item.Name].count == 1) {
+                Items.Remove(item.Name);
+                return true;
+            }
+
+            Items[item.Name].count -= 1;
+            return true;
+        }
         #endregion
 
         public void DrawStats(RLConsole statConsole)
@@ -59,5 +83,15 @@ namespace RoguelikeGame.Core
             statConsole.Print(1, 7, $"Defense: {Defense} ({DefenseChance}%)", Colors.Text);
             statConsole.Print(1, 9, $"Gold:    {Gold}", Colors.Gold);
         }
+    }
+
+    public class ItemCountPair {
+        public ItemCountPair(IItem _item, int _count)
+        {
+            item = _item;
+            count = _count;
+        }
+        public IItem item;
+        public int count;
     }
 }

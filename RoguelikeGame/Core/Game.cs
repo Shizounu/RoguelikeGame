@@ -88,9 +88,9 @@ namespace RoguelikeGame
             InputSystem.Instance.OnInteractInput += () =>
             {
                 List<IInteractable> interactables = GetActiveMap().GetInteractablesAt(Player.X, Player.Y);
-                if(interactables.Count > 0)
+                foreach (var item in interactables)
                 {
-                    interactables.First().Interact();
+                    item.Interact();
                 }
             };
 
@@ -164,10 +164,15 @@ namespace RoguelikeGame
             _inventoryConsole = new SubConsole(20, 70);
 
             //Update
+            
 
             //Draw
+            /*
             _inventoryConsole.OnDraw += (console, root) => _inventoryConsole.SetBackgroundColor(RLColor.Cyan);
             _inventoryConsole.OnDraw += (console, root) => console.console.Print(1, 1, "Inventory", RLColor.White);
+            */
+
+            _inventoryConsole.OnDraw += (console, root) => Player.DrawInventory(console.console);
 
             //_inventoryConsole.OnDraw += (console, root) => console.Blit(root, 0, 0);
             _inventoryConsole.OnDraw += (console, root) => console.Blit(root, 80, 0);

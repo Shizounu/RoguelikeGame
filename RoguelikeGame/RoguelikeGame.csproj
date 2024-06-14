@@ -52,6 +52,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Core\Inventory System\HealingPotion.cs" />
+    <Compile Include="Core\Inventory System\IConsumable.cs" />
     <Compile Include="Core\Inventory System\IItem.cs" />
     <Compile Include="Core\Inventory System\ItemType.cs" />
     <Compile Include="Core\Map\Actors\Actor.cs" />
