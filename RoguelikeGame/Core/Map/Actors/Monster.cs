@@ -26,7 +26,7 @@ namespace RoguelikeGame.Core
         {
             // Start at Y=13 which is below the player stats.
             // Multiply the position by 2 to leave a space between each stat
-            int yPosition = 13 + (position * 2);
+            int yPosition = (position * 2);
 
             // Begin the line by printing the symbol of the monster in the appropriate color
             statConsole.Print(1, yPosition, Symbol.ToString(), Color);

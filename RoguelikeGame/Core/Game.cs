@@ -32,6 +32,7 @@ namespace RoguelikeGame
         public static SubConsole _mapConsole;
         public static SubConsole _messageConsole;
         public static SubConsole _statConsole;
+        public static SubConsole _enemyHealthConsole;
         public static SubConsole _inventoryConsole;
 
         public static Player Player;
@@ -130,15 +131,18 @@ namespace RoguelikeGame
         }
         private static void InitStats()
         {
-            _statConsole = new SubConsole(20, 70);
+            //_statConsole = new SubConsole(20, 70);
+            _statConsole = new SubConsole(20, 11);
+            _enemyHealthConsole = new SubConsole(20, 11);
 
             //Update
-            
+
 
             //Draw
             _statConsole.OnDraw += (console, root) => Player.DrawStats(console.console);
 
-            _statConsole.OnDraw += (console, root) => {
+            
+            _enemyHealthConsole.OnDraw += (console, root) => {
                 int i = 0;
                 foreach (var Monster in GetActiveMap().Monsters) {
                     if(GetActiveMap().IsInFov(Monster.X, Monster.Y))
@@ -148,12 +152,16 @@ namespace RoguelikeGame
                     }
                 }
             };
+            
 
-            _statConsole.OnDraw += (console, root) => console.Blit(root, 80, 0);
+            //_statConsole.OnDraw += (console, root) => console.Blit(root, 80, 0);
+            _statConsole.OnDraw += (console, root) =>  console.Blit(root, 0, 0);
+            _enemyHealthConsole.OnDraw += (console, root) => console.Blit(root, 20, 0);
         }
         private static void InitInventory()
         {
-            _inventoryConsole = new SubConsole(80, 11);
+            //_inventoryConsole = new SubConsole(80, 11);
+            _inventoryConsole = new SubConsole(20, 70);
 
             //Update
 
@@ -161,7 +169,8 @@ namespace RoguelikeGame
             _inventoryConsole.OnDraw += (console, root) => _inventoryConsole.SetBackgroundColor(RLColor.Cyan);
             _inventoryConsole.OnDraw += (console, root) => console.console.Print(1, 1, "Inventory", RLColor.White);
 
-            _inventoryConsole.OnDraw += (console, root) => console.Blit(root, 0, 0);
+            //_inventoryConsole.OnDraw += (console, root) => console.Blit(root, 0, 0);
+            _inventoryConsole.OnDraw += (console, root) => console.Blit(root, 80, 0);
         }
 
 
@@ -193,6 +202,7 @@ namespace RoguelikeGame
             _mapConsole?.Draw(_rootConsole);
             _messageConsole?.Draw(_rootConsole);
             _statConsole?.Draw(_rootConsole);
+            _enemyHealthConsole?.Draw(_rootConsole);
             _inventoryConsole?.Draw(_rootConsole);
 
             _rootConsole.Draw();

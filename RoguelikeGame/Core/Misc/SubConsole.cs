@@ -28,9 +28,9 @@ namespace RoguelikeGame.Core
             OnDraw?.Invoke(this, root);
         } 
         
-        public void Blit(RLRootConsole root,int DestX, int DestY, int srcHeight = 0, int srcWidth = 0)
+        public void Blit(RLRootConsole root,int DestX, int DestY, int startX = 0, int startY = 0)
         {
-            RLConsole.Blit(console, 0, 0, Width, Height, root, DestX, DestY);
+            RLConsole.Blit(console, startX, startY, Width, Height, root, DestX, DestY);
         }
         public void SetBackgroundColor(RLColor color)
         {
