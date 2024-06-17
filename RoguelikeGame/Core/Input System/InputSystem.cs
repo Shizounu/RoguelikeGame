@@ -1,4 +1,5 @@
 ﻿using RLNET;
+using RoguelikeGame.Core.MouseSelection;
 using RoguelikeGame.Interfaces_and_Abstracts;
 using System;
 using System.Collections.Generic;
@@ -12,7 +13,6 @@ namespace RoguelikeGame.Systems
     public delegate void InputHandler(); 
 
     public class InputSystem : Singleton<InputSystem> {
-        
 
         public event InputHandler OnUpInput;
         public event InputHandler OnDownInput;
@@ -23,6 +23,8 @@ namespace RoguelikeGame.Systems
         public event InputHandler OnCloseInput;
 
         public event InputHandler OnUserInput;
+
+        public List<IClickable> clickables = new List<IClickable>();
 
         public void CheckInput(RLRootConsole rootConsole) {
 
@@ -70,6 +72,40 @@ namespace RoguelikeGame.Systems
         }
 
 
+        public void AddClickable(IClickable clickable)
+        {
+            clickables.Add(clickable);
+        }
+        public void RemoveClickable(IClickable clickable) {
+            clickables.Remove(clickable);
+        }
+        public void CheckClickables(RLRootConsole rootConsole) {
+
+            foreach (var clickable in clickables)
+            {
+                clickable.IsHovered = false; 
+                clickable.WasClickedThisFrame = false;
+            }
+
+            int mouseX = rootConsole.Mouse.X;
+            int mouseY = rootConsole.Mouse.Y; 
+            foreach (var clickable in clickables) {
+                if(IsMouseInBounds(clickable, mouseX, mouseY)) {
+                    clickable.IsHovered = true;
+                    if (rootConsole.Mouse.GetLeftClick())
+                    {
+                        clickable.OnClick();
+                        clickable.WasClickedThisFrame = true;
+                    }
+                    break; //only one item can be clicked at a time
+                }
+            }
+        }
+        private bool IsMouseInBounds(IClickable clickable, int mouseX, int mouseY) {
+            //Clickable X/Y is always the top left corner of a window
+            return mouseX >= clickable.X && mouseX <= (clickable.X + clickable.Width)
+                && mouseY <= clickable.Y && mouseY >= (clickable.Y - clickable.Height);
+        }
 
     }
 }

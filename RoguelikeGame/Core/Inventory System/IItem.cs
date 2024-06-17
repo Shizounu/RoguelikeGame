@@ -9,6 +9,8 @@ namespace RoguelikeGame.Core.Inventory_System
     public interface IItem {
         string Name { get; }
         float Weight { get; }
-        ItemType Type { get; }  
+        ItemType Type { get; }
+
+        void Use();
     }
 }

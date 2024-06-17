@@ -69,6 +69,7 @@
     <Compile Include="Core\Map\Objects\Stairs.cs" />
     <Compile Include="Core\Command System\IBehaviour.cs" />
     <Compile Include="Core\Map\Interfaces\IInteractable.cs" />
+    <Compile Include="Core\Input System\IClickable.cs" />
     <Compile Include="Core\Scheduling System\ISchedulable.cs" />
     <Compile Include="Core\Misc\Singleton.cs" />
     <Compile Include="Core\Scheduling System\SchedulingSystem.cs" />

@@ -57,7 +57,8 @@ namespace RoguelikeGame.Core
                 map.AddInteractable(goldPile);
             }
 
-            if(Dice.Roll("1d10") > 0)
+            //if(Dice.Roll("1d10") == 10)
+            if(true)
             {
                 HealingPotion potion = new HealingPotion()
                 {

@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using RoguelikeGame.Core.Inventory_System;
 using RoguelikeGame.Core;
 using RogueSharp.DiceNotation;
+using RoguelikeGame.Systems;
 
 namespace RoguelikeGame
 {
@@ -46,7 +47,10 @@ namespace RoguelikeGame
 
         public void Use()
         {
-            Game.Player.Health += Dice.Roll("1d12");
+            int amount = Dice.Roll("2d12");
+            MessageLog.Instance.Add($"{Game.Player.Name} drank {Name} and healed {amount}");
+            Game.Player.Heal(amount);
+            Game.Player.RemoveItem(this);
         }
     }
 }
