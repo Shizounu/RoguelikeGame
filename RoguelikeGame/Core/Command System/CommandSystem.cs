@@ -1,16 +1,14 @@
-﻿using RoguelikeGame.Core;
-using RoguelikeGame.Core.Map;
-using RoguelikeGame.Interface;
-using RoguelikeGame.Interfaces_and_Abstracts;
+﻿using System.Text;
+
 using RogueSharp;
 using RogueSharp.DiceNotation;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace RoguelikeGame.Systems
+using RoguelikeGame.Map;
+using RoguelikeGame.Map.Actors;
+using RoguelikeGame.Systems.Message;
+using RoguelikeGame.Systems.Scheduling;
+
+namespace RoguelikeGame.Systems.Command
 {
     public class CommandSystem
     {
@@ -122,10 +120,9 @@ namespace RoguelikeGame.Systems
             }
             else if (defender is Monster)
             {
-                ((Monster)defender).DoDrops(Game.GetActiveMap());
+                ((Monster)defender).DoDrops(Game.GetActiveMap(), (Monster)defender);
                 Game.GetActiveMap().RemoveMonster((Monster)defender);
                 MessageLog.Instance.Add($"{defender.Name} died and dropped {defender.Gold} gold");
-                
             }
         }
 

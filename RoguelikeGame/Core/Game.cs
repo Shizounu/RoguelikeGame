@@ -1,10 +1,10 @@
 ﻿using RLNET;
-using RoguelikeGame.Core;
-using RoguelikeGame.Interfaces_and_Abstracts;
-using RoguelikeGame.Systems;
 using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.InteropServices.ComTypes;
+
+using RoguelikeGame.Map;
+using RoguelikeGame.Systems.Input;
+using RoguelikeGame.Systems.Message;
+using RoguelikeGame.Systems.RandomProvider;
 
 namespace RoguelikeGame
 {
@@ -35,8 +35,8 @@ namespace RoguelikeGame
         public static SubConsole _enemyHealthConsole;
         public static SubConsole _inventoryConsole;
 
-        public static Player Player;
-        public static CommandSystem CommandSystem;
+        public static Map.Actors.Player Player;
+        public static Systems.Command.CommandSystem CommandSystem;
         public static Dictionary<int, DungeonMap> GeneratedMaps;
 
         private const string fontFileName = "terminal8x8.png";
@@ -45,7 +45,7 @@ namespace RoguelikeGame
         {
             
             _rootConsole = new RLRootConsole(fontFileName, _screenWidth, _screenHeight, 8, 8, 1f, consoleTitle);
-            CommandSystem = new CommandSystem();
+            CommandSystem = new Systems.Command.CommandSystem();
             GeneratedMaps = new Dictionary<int, DungeonMap>();
 
             InitMap();

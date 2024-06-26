@@ -1,11 +1,7 @@
-﻿using RogueSharp.Random;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System;
+using RogueSharp.Random;
 
-namespace RoguelikeGame.Systems
+namespace RoguelikeGame.Systems.RandomProvider
 {
     /// <summary>
     /// Singleton

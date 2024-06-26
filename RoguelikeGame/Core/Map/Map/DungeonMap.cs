@@ -1,14 +1,16 @@
 ﻿using RLNET;
-using RoguelikeGame.Interfaces_and_Abstracts;
-using RoguelikeGame.Systems;
+
 using RogueSharp;
-using System;
+
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace RoguelikeGame.Core
+using RoguelikeGame.Color;
+using RoguelikeGame.Map.Actors;
+using RoguelikeGame.Map.Object;
+using RoguelikeGame.Systems;
+
+namespace RoguelikeGame.Map
 {
     // Our custom DungeonMap class extends the base RogueSharp Map class
     public class DungeonMap : RogueSharp.Map
@@ -17,11 +19,11 @@ namespace RoguelikeGame.Core
         public List<Monster> Monsters = new List<Monster>();
         public List<Door> Doors = new List<Door>();
         public List<IInteractable> interactables = new List<IInteractable>();
-        public SchedulingSystem SchedulingSystem; 
+        public Systems.Scheduling.SchedulingSystem SchedulingSystem; 
 
         public DungeonMap()
         {
-            SchedulingSystem = new SchedulingSystem();
+            SchedulingSystem = new Systems.Scheduling.SchedulingSystem();
             Rooms = new List<Rectangle>();
             Monsters = new List<Monster>();
             Doors = new List<Door>();  
@@ -138,8 +140,8 @@ namespace RoguelikeGame.Core
             {
                 for (int i = 0; i < 100; i++)
                 {
-                    int x = RandomProvider.Instance.Provider.Next(1, room.Width - 2) + room.X;
-                    int y = RandomProvider.Instance.Provider.Next(1, room.Height - 2) + room.Y;
+                    int x = Systems.RandomProvider.RandomProvider.Instance.Provider.Next(1, room.Width - 2) + room.X;
+                    int y = Systems.RandomProvider.RandomProvider.Instance.Provider.Next(1, room.Height - 2) + room.Y;
                     if (IsWalkable(x, y))
                     {
                         return new Point(x, y);
@@ -170,7 +172,7 @@ namespace RoguelikeGame.Core
                 // Once the door is opened it should be marked as transparent and no longer block field-of-view
                 SetCellProperties(x, y, true, cell.IsWalkable, cell.IsExplored);
 
-                MessageLog.Instance.Add($"{actor.Name} opened a door");
+                Systems.Message.MessageLog.Instance.Add($"{actor.Name} opened a door");
             }
         }
         #endregion

@@ -1,13 +1,10 @@
-﻿using RoguelikeGame.Core.Map;
-using RoguelikeGame.Systems;
-using RogueSharp.DiceNotation;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
-namespace RoguelikeGame.Core.Actors
+using RogueSharp.DiceNotation;
+
+using RoguelikeGame.Color;
+
+namespace RoguelikeGame.Map.Actors
 {
     public class Kobold : Monster
     {
@@ -29,7 +26,10 @@ namespace RoguelikeGame.Core.Actors
                 MaxHealth = health,
                 Name = "Kobold",
                 Speed = 14,
-                Symbol = 'k'
+                Symbol = 'k',
+                DropFunctions = new List<DropFunction> { Monster.HealingPotionDrop, Monster.GoldDrop }
+
+                
             };
         }
     }

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RoguelikeGame
+namespace RoguelikeGame.Systems.Inventory
 {
     public interface IConsumable
     {

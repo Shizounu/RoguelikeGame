@@ -1,13 +1,9 @@
 ﻿using RLNET;
-using RoguelikeGame.Interface;
 using RogueSharp;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace RoguelikeGame.Core
+using RoguelikeGame.Color;
+
+namespace RoguelikeGame.Map.Object
 {
     public class Door : IDrawable
     {

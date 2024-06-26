@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RoguelikeGame.Interface
+namespace RoguelikeGame.Systems.Scheduling
 {
     public interface IScheduleable
     {

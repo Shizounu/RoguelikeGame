@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RoguelikeGame.Interfaces_and_Abstracts
+namespace RoguelikeGame
 {
     public abstract class Singleton<T> where T : new() {
 

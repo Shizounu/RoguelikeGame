@@ -1,12 +1,7 @@
 ﻿using RLNET;
-using RoguelikeGame.Interfaces_and_Abstracts;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace RoguelikeGame.Systems
+namespace RoguelikeGame.Systems.Message
 {
     // Represents a queue of messages that can be added to
     // Has a method for and drawing to an RLConsole

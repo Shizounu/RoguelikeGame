@@ -1,13 +1,9 @@
-﻿using RoguelikeGame.Interface;
-using RoguelikeGame.Systems;
-using RogueSharp;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using RogueSharp;
+using RoguelikeGame.Map;
+using RoguelikeGame.Map.Actors;
+using RoguelikeGame.Systems.Message;
 
-namespace RoguelikeGame.Core.Behaviours
+namespace RoguelikeGame.Systems.Command.Behaviour
 {
     public class StandardMoveAndAttack : IBehavior
     {

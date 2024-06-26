@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RoguelikeGame.Core
+namespace RoguelikeGame
 {
     public class SubConsole {
         public SubConsole(int _width, int _height) {

@@ -1,16 +1,15 @@
 ﻿using RLNET;
-using RoguelikeGame.Core.Behaviours;
-using RoguelikeGame.Core.Map;
-using RoguelikeGame.Interfaces_and_Abstracts;
-using RoguelikeGame.Systems;
-using RogueSharp.DiceNotation;
+
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace RoguelikeGame.Core
+using RogueSharp.DiceNotation;
+
+using RoguelikeGame.Color;
+using RoguelikeGame.Systems.Command;
+using RoguelikeGame.Systems.Command.Behaviour;
+
+namespace RoguelikeGame.Map.Actors
 {
     public class Monster : Actor
     {
@@ -43,30 +42,43 @@ namespace RoguelikeGame.Core
             statConsole.Print(2, yPosition, $": {Name}", Palette.DbLight);
         }
 
-        public virtual void DoDrops(DungeonMap map) {
-            if(Gold > 0)
+        public delegate void DropFunction(DungeonMap map, Monster monster);
+        public List<DropFunction> DropFunctions;
+
+
+        public static void GoldDrop(DungeonMap map, Monster monster)
+        {
+            if (monster.Gold > 0)
             {
-                GoldPile goldPile = new GoldPile
+                RoguelikeGame.Map.Object.GoldPile goldPile = new RoguelikeGame.Map.Object.GoldPile
                 {
-                    X = this.X,
-                    Y = this.Y,
-                    Amount = Gold
+                    X = monster.X,
+                    Y = monster.Y,
+                    Amount = monster.Gold
                 };
 
-                
+
                 map.AddInteractable(goldPile);
             }
-
-            //if(Dice.Roll("1d10") == 10)
-            if(true)
+        }
+        public static void HealingPotionDrop(DungeonMap map, Monster monster)
+        {
+            if (Dice.Roll("1d10") == 10)
             {
-                HealingPotion potion = new HealingPotion()
+                RoguelikeGame.Systems.Inventory.ItemDefinition.HealingPotion potion = new RoguelikeGame.Systems.Inventory.ItemDefinition.HealingPotion()
                 {
-                    X = this.X,
-                    Y = this.Y
+                    X = monster.X,
+                    Y = monster.Y
                 };
 
                 map.AddInteractable(potion);
+            }
+        }
+
+
+        public void DoDrops(DungeonMap map, Monster monster) {
+            foreach (var item in DropFunctions) {
+                item.Invoke(map, monster);
             }
         }
     }

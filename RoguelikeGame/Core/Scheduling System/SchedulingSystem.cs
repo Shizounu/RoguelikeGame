@@ -1,12 +1,9 @@
-﻿using RoguelikeGame.Interface;
-using RoguelikeGame.Interfaces_and_Abstracts;
-using System;
+﻿using System.Linq;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace RoguelikeGame.Systems
+using RoguelikeGame.Map.Actors;
+
+namespace RoguelikeGame.Systems.Scheduling
 {
     public class SchedulingSystem
     {

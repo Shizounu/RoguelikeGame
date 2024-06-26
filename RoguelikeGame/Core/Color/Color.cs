@@ -1,11 +1,6 @@
 ﻿using RLNET;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace RoguelikeGame.Core
+namespace RoguelikeGame.Color
 {
     public static class Colors
     {

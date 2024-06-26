@@ -1,14 +1,7 @@
 ﻿using RLNET;
-using RoguelikeGame.Core.MouseSelection;
-using RoguelikeGame.Interfaces_and_Abstracts;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace RoguelikeGame.Systems
+namespace RoguelikeGame.Systems.Input
 {
     public delegate void InputHandler(); 
 

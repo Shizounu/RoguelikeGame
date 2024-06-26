@@ -1,14 +1,14 @@
 ﻿using RLNET;
-using RoguelikeGame.Core.Inventory_System;
-using RoguelikeGame.Core.MouseSelection;
 using RoguelikeGame.Systems;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace RoguelikeGame.Core
+using RoguelikeGame.Color;
+using RoguelikeGame.Systems.Inventory;
+using RoguelikeGame.Systems.Input;
+using RoguelikeGame.Systems.Message;
+
+///TODO: Too much of an Uber class - refractor into components
+namespace RoguelikeGame.Map.Actors
 {
     public class Player : Actor
     {

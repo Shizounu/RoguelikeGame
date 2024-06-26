@@ -1,15 +1,9 @@
 ﻿using RLNET;
-using RoguelikeGame.Interface;
-using RoguelikeGame.Interfaces_and_Abstracts;
-using RoguelikeGame.Systems;
 using RogueSharp;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using RoguelikeGame.Color;
+using RoguelikeGame.Systems.Message;
 
-namespace RoguelikeGame.Core
+namespace RoguelikeGame.Map.Object
 {
     public class Stairs : IDrawable, IInteractable
     {

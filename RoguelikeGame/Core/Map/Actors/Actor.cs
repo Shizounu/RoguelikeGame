@@ -1,13 +1,9 @@
 ﻿using RLNET;
-using RoguelikeGame.Interface;
 using RogueSharp;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using RoguelikeGame.Systems.Scheduling;
+using RoguelikeGame.Color;
 
-namespace RoguelikeGame.Core
+namespace RoguelikeGame.Map.Actors
 {
     public class Actor : IActor, IDrawable, IScheduleable
     {

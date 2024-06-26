@@ -1,15 +1,10 @@
 ﻿using RLNET;
-using RoguelikeGame.Interface;
-using RoguelikeGame.Interfaces_and_Abstracts;
-using RogueSharp;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace RoguelikeGame.Core.Map
+using RogueSharp;
+
+using RoguelikeGame.Color;
+
+namespace RoguelikeGame.Map.Object
 {
     public class GoldPile : IDrawable, IInteractable
     {

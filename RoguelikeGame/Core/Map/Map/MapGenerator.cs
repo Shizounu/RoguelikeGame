@@ -1,14 +1,14 @@
-﻿using RoguelikeGame.Core.Actors;
-using RoguelikeGame.Systems;
-using RogueSharp;
-using RogueSharp.DiceNotation;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace RoguelikeGame.Core
+using RogueSharp;
+using RogueSharp.DiceNotation;
+
+using RoguelikeGame.Systems.RandomProvider;
+using RoguelikeGame.Map.Actors;
+
+namespace RoguelikeGame.Map
 {
     public static class MapGenerator
     {
@@ -176,7 +176,7 @@ namespace RoguelikeGame.Core
                 {
                     // A door must block field-of-view when it is closed.
                     _map.SetCellProperties(cell.X, cell.Y, false, true);
-                    _map.Doors.Add(new Door
+                    _map.Doors.Add(new Object.Door
                     {
                         X = cell.X,
                         Y = cell.Y,
@@ -228,14 +228,14 @@ namespace RoguelikeGame.Core
 
         private static void CreateStairs(DungeonMap _map, int CurLayer)
         {
-            _map.AddInteractable(new Stairs
+            _map.AddInteractable(new Object.Stairs
             {
                 X = _map.Rooms.First().Center.X + 1,
                 Y = _map.Rooms.First().Center.Y,
                 Symbol = '<',
                 TargetLayer = CurLayer - 1
             });
-            _map.AddInteractable( new Stairs
+            _map.AddInteractable(new Object.Stairs
             {
                 X = _map.Rooms.Last().Center.X,
                 Y = _map.Rooms.Last().Center.Y,

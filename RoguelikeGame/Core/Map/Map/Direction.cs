@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RoguelikeGame.Core
+namespace RoguelikeGame.Map
 {
     // Direction values correspond to numpad numbers
     public enum Direction

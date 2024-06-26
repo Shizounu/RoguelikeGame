@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RoguelikeGame.Core.Inventory_System
+namespace RoguelikeGame.Systems.Inventory
 {
     public enum ItemType
     {

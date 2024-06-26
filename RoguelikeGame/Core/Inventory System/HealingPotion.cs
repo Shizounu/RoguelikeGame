@@ -1,16 +1,12 @@
 ﻿using RLNET;
 using RogueSharp;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using RoguelikeGame.Core.Inventory_System;
-using RoguelikeGame.Core;
 using RogueSharp.DiceNotation;
-using RoguelikeGame.Systems;
 
-namespace RoguelikeGame
+using RoguelikeGame.Map;
+using RoguelikeGame.Color;
+using RoguelikeGame.Systems.Message;
+
+namespace RoguelikeGame.Systems.Inventory.ItemDefinition
 {
     public class HealingPotion : IItem, IInteractable, IConsumable
     {
