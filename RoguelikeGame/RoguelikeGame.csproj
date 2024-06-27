@@ -57,7 +57,7 @@
     <Compile Include="Core\Inventory System\IItem.cs" />
     <Compile Include="Core\Inventory System\ItemType.cs" />
     <Compile Include="Core\Map\Actors\Actor.cs" />
-    <Compile Include="Core\Map\Actors\Kobold.cs" />
+    <Compile Include="Core\Map\Actors\GenericMonsters.cs" />
     <Compile Include="Core\Command System\Behaviours\StandardMoveAndAttack.cs" />
     <Compile Include="Core\Color\Color.cs" />
     <Compile Include="Core\Map\Map\Direction.cs" />

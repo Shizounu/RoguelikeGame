@@ -1,19 +1,22 @@
-﻿using System.Collections.Generic;
-
+﻿using RoguelikeGame.Color;
+using RoguelikeGame.Map.Actors;
 using RogueSharp.DiceNotation;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Reflection.Emit;
+using System.Text;
+using System.Threading.Tasks;
+using static RoguelikeGame.Map.Actors.Monster;
 
-using RoguelikeGame.Color;
-
-namespace RoguelikeGame.Map.Actors
+namespace RoguelikeGame.Core.Map.Actors
 {
-    public class Kobold : Monster
+    public static class GenericMonsters
     {
-        public static Kobold Create(int level)
+        public static Monster CreateKobold(int level)
         {
-            
-
             int health = Dice.Roll("2D5");
-            return new Kobold
+            Monster kobold = new Monster()
             {
                 Attack = Dice.Roll("1D3") + level / 3,
                 AttackChance = Dice.Roll("25D3"),
@@ -27,10 +30,12 @@ namespace RoguelikeGame.Map.Actors
                 Name = "Kobold",
                 Speed = 14,
                 Symbol = 'k',
-                DropFunctions = new List<DropFunction> { Monster.HealingPotionDrop, Monster.GoldDrop }
 
-                
+                DropFunctions = new List<DropFunction> { Monster.HealingPotionDrop, Monster.GoldDrop },
+                Level = level
             };
+
+            return kobold;
         }
     }
 }

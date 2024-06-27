@@ -17,6 +17,7 @@ namespace RoguelikeGame.Map.Actors
         }
 
         // IActor
+        private int _level; 
         private int _attack;
         private int _attackChance;
         private int _awareness;
@@ -27,6 +28,12 @@ namespace RoguelikeGame.Map.Actors
         private int _maxHealth;
         private string _name;
         private int _speed;
+
+        public int Level
+        {
+            get { return _level; }
+            set { _level = value; }
+        }
 
         public int Attack
         {

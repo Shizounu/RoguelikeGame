@@ -29,7 +29,7 @@ namespace RoguelikeGame.Systems.Command
 
             int damage = hits - blocks;
 
-            ResolveDamage(defender, damage);
+            ResolveDamage(defender, damage, attacker);
         }
 
         // The attacker rolls based on his stats to see if he gets any hits
@@ -92,7 +92,7 @@ namespace RoguelikeGame.Systems.Command
         }
 
         // Apply any damage that wasn't blocked to the defender
-        private static void ResolveDamage(Actor defender, int damage)
+        private static void ResolveDamage(Actor defender, int damage, Actor attacker)
         {
             if (damage > 0)
             {
@@ -103,6 +103,10 @@ namespace RoguelikeGame.Systems.Command
                 if (defender.Health <= 0)
                 {
                     ResolveDeath(defender);
+
+                    if(attacker is Player) {
+                        ((Player)attacker).AddExperience(defender.Level);
+                    }
                 }
             }
             else

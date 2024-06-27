@@ -6,6 +6,8 @@ using RoguelikeGame.Color;
 using RoguelikeGame.Systems.Inventory;
 using RoguelikeGame.Systems.Input;
 using RoguelikeGame.Systems.Message;
+using System;
+using System.Security.Cryptography.X509Certificates;
 
 ///TODO: Too much of an Uber class - refractor into components
 namespace RoguelikeGame.Map.Actors
@@ -86,6 +88,40 @@ namespace RoguelikeGame.Map.Actors
         }
         #endregion
 
+        #region Leveling 
+
+        public int ExperienceRequired { get => 10 + (int)Math.Round(Level * 1.5); }
+        private int CurrentExperience; 
+        public void AddExperience(int amount) {
+            CurrentExperience += amount;
+            if (CurrentExperience >= ExperienceRequired)
+            {
+                DoLevelUp();
+                CurrentExperience = 0;
+            }
+            MessageLog.Instance.Add($"EXP {amount} TOTAL {CurrentExperience} OUT OF {ExperienceRequired}", RLColor.Red);
+        }
+        public void DoLevelUp()
+        {
+            
+
+            Level += 1; 
+            if(Level % 3 == 0) {
+                MaxHealth += 10;
+                Heal(10);
+            }
+
+            if(Level % 5 == 0)
+            {
+                Attack += 1;
+                Speed += 1;
+                Defense += 1;
+            }
+        }
+
+        #endregion
+
+        #region Drawing Functions
         public void DrawStats(RLConsole statConsole)
         {
             statConsole.Print(1, 1, $"Name:    {Name}", Colors.Text);
@@ -109,6 +145,8 @@ namespace RoguelikeGame.Map.Actors
                 i += 1; 
             }
         }
+        #endregion
+
     }
 
     public class ItemCountPair : IClickable {

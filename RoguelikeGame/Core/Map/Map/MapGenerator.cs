@@ -7,6 +7,7 @@ using RogueSharp.DiceNotation;
 
 using RoguelikeGame.Systems.RandomProvider;
 using RoguelikeGame.Map.Actors;
+using RoguelikeGame.Core.Map.Actors;
 
 namespace RoguelikeGame.Map
 {
@@ -145,7 +146,7 @@ namespace RoguelikeGame.Map
                         if (randomRoomLocation != null)
                         {
                             // Temporarily hard code this monster to be created at level 1
-                            var monster = Kobold.Create(1);
+                            var monster = GenericMonsters.CreateKobold(Math.Max(1, Layer / 3));
                             monster.X = randomRoomLocation.X;
                             monster.Y = randomRoomLocation.Y;
                             _map.AddMonster(monster);
