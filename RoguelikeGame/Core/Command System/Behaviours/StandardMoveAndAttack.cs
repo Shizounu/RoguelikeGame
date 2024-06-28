@@ -2,12 +2,13 @@
 using RoguelikeGame.Map;
 using RoguelikeGame.Map.Actors;
 using RoguelikeGame.Systems.Message;
+using RoguelikeGame.Systems.Command.Commands;
 
 namespace RoguelikeGame.Systems.Command.Behaviour
 {
     public class StandardMoveAndAttack : IBehavior
     {
-        public bool Act(Monster monster, CommandSystem commandSystem)
+        public bool Act(Monster monster)
         {
             DungeonMap dungeonMap = Game.GetActiveMap();
             Player player = Game.Player;
@@ -59,7 +60,7 @@ namespace RoguelikeGame.Systems.Command.Behaviour
                 {
                     try
                     {
-                        commandSystem.MoveMonster(monster, (Cell)path.StepForward());
+                        CommandSystem.Instance.EnqueueCommand(new MoveMonster(monster, (Cell)path.StepForward()));
                     }
                     catch (NoMoreStepsException)
                     {

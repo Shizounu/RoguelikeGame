@@ -9,5 +9,6 @@ namespace RoguelikeGame.Systems.Scheduling
     public interface IScheduleable
     {
         int Time { get; }
+        void OnSchedule();
     }
 }

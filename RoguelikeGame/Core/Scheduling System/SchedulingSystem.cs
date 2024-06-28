@@ -32,8 +32,7 @@ namespace RoguelikeGame.Systems.Scheduling
         // Useful for when an monster is killed to remove it before it's action comes up again.
         public void Remove(IScheduleable scheduleable)
         {
-            KeyValuePair<int, List<IScheduleable>> scheduleableListFound
-              = new KeyValuePair<int, List<IScheduleable>>(-1, null);
+            KeyValuePair<int, List<IScheduleable>> scheduleableListFound = new KeyValuePair<int, List<IScheduleable>>(-1, null);
 
             foreach (var scheduleablesList in _scheduleables)
             {

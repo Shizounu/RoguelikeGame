@@ -8,6 +8,7 @@ using RogueSharp.DiceNotation;
 using RoguelikeGame.Color;
 using RoguelikeGame.Systems.Command;
 using RoguelikeGame.Systems.Command.Behaviour;
+using RoguelikeGame.Systems.Scheduling;
 
 namespace RoguelikeGame.Map.Actors
 {
@@ -15,10 +16,10 @@ namespace RoguelikeGame.Map.Actors
     {
         public int? TurnsAlerted { get; set; }
 
-        public virtual void PerformAction(CommandSystem commandSystem)
+        public virtual void PerformAction()
         {
             var behavior = new StandardMoveAndAttack();
-            behavior.Act(this, commandSystem);
+            behavior.Act(this);
         }
 
         public void DrawStats(RLConsole statConsole, int position)
@@ -75,11 +76,18 @@ namespace RoguelikeGame.Map.Actors
             }
         }
 
-
         public void DoDrops(DungeonMap map, Monster monster) {
             foreach (var item in DropFunctions) {
                 item.Invoke(map, monster);
             }
+        }
+
+        public override void OnSchedule()
+        {
+            PerformAction();
+            Game.GetActiveMap().SchedulingSystem.Add(this);
+
+            Game.GetActiveMap().SchedulingSystem.Get().OnSchedule();
         }
     }
 }

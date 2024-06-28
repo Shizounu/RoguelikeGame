@@ -5,6 +5,9 @@ using RoguelikeGame.Map;
 using RoguelikeGame.Systems.Input;
 using RoguelikeGame.Systems.Message;
 using RoguelikeGame.Systems.RandomProvider;
+using RoguelikeGame.Systems.Command;
+using RoguelikeGame.Systems.Command.Commands;
+using RoguelikeGame.Systems.Scheduling;
 
 namespace RoguelikeGame
 {
@@ -36,7 +39,6 @@ namespace RoguelikeGame
         public static SubConsole _inventoryConsole;
 
         public static Map.Actors.Player Player;
-        public static Systems.Command.CommandSystem CommandSystem;
         public static Dictionary<int, DungeonMap> GeneratedMaps;
 
         private const string fontFileName = "terminal8x8.png";
@@ -45,7 +47,6 @@ namespace RoguelikeGame
         {
             
             _rootConsole = new RLRootConsole(fontFileName, _screenWidth, _screenHeight, 8, 8, 1f, consoleTitle);
-            CommandSystem = new Systems.Command.CommandSystem();
             GeneratedMaps = new Dictionary<int, DungeonMap>();
 
             InitMap();
@@ -73,19 +74,19 @@ namespace RoguelikeGame
             _rootConsole.Update += (obj, args) => InputSystem.Instance.CheckClickables(_rootConsole);
 
             InputSystem.Instance.OnUserInput += () => _isDirty = true;
-            InputSystem.Instance.OnUserInput += () => CommandSystem.EndPlayerTurn();
+            InputSystem.Instance.OnUserInput += () => Player.IsPlayerTurn = false;
             InputSystem.Instance.OnUserInput += () =>
             {
-                if (!CommandSystem.IsPlayerTurn) {
-                    CommandSystem.ActivateMonsters();
+                if (!Player.IsPlayerTurn) {
+                    GetActiveMap().SchedulingSystem.Get().OnSchedule();
                     _isDirty = true;
                 }
             };
 
-            InputSystem.Instance.OnUpInput += () => CommandSystem.MovePlayer(Direction.Up);
-            InputSystem.Instance.OnDownInput += () => CommandSystem.MovePlayer(Direction.Down);
-            InputSystem.Instance.OnLeftInput += () => CommandSystem.MovePlayer(Direction.Left);
-            InputSystem.Instance.OnRightInput += () => CommandSystem.MovePlayer(Direction.Right);
+            InputSystem.Instance.OnUpInput += () => CommandSystem.Instance.EnqueueCommand(new MovePlayer(Direction.Up)) ;
+            InputSystem.Instance.OnDownInput += () => CommandSystem.Instance.EnqueueCommand(new MovePlayer(Direction.Down));
+            InputSystem.Instance.OnLeftInput += () => CommandSystem.Instance.EnqueueCommand(new MovePlayer(Direction.Left));
+            InputSystem.Instance.OnRightInput += () => CommandSystem.Instance.EnqueueCommand(new MovePlayer(Direction.Right));
             InputSystem.Instance.OnInteractInput += () =>
             {
                 List<IInteractable> interactables = GetActiveMap().GetInteractablesAt(Player.X, Player.Y);
@@ -111,6 +112,7 @@ namespace RoguelikeGame
                 if(Player.Health <= 0)
                     _rootConsole.Close();
             };
+            _mapConsole.OnUpdate += (console, root) => CommandSystem.Instance.DoAllCommands();
             //Draw Calls
             _mapConsole.OnDraw += (console, root) => GetActiveMap().Draw(console.console);
             _mapConsole.OnDraw += (console, root) => Player.Draw(console.console, GetActiveMap());
@@ -194,6 +196,8 @@ namespace RoguelikeGame
             _messageConsole?.Update(_rootConsole);
             _statConsole?.Update(_rootConsole);
             _inventoryConsole?.Update(_rootConsole);
+
+
         }
         private void OnRootConsoleRender(object sender, UpdateEventArgs e)
         {

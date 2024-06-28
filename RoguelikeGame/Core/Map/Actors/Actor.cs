@@ -5,7 +5,7 @@ using RoguelikeGame.Color;
 
 namespace RoguelikeGame.Map.Actors
 {
-    public class Actor : IActor, IDrawable, IScheduleable
+    public abstract class Actor : IActor, IDrawable, IScheduleable
     {
 
         public int Time
@@ -15,6 +15,8 @@ namespace RoguelikeGame.Map.Actors
                 return Speed;
             }
         }
+
+        public abstract void OnSchedule();
 
         // IActor
         private int _level; 

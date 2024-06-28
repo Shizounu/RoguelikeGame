@@ -31,6 +31,7 @@ namespace RoguelikeGame.Map.Actors
         }
 
         public int CurrentLayer = 1;
+        public bool IsPlayerTurn = true; 
 
         public void Heal(int amount)
         {
@@ -145,7 +146,13 @@ namespace RoguelikeGame.Map.Actors
                 i += 1; 
             }
         }
+
         #endregion
+        public override void OnSchedule()
+        {
+            IsPlayerTurn = true;
+            Game.GetActiveMap().SchedulingSystem.Add(Game.Player);
+        }
 
     }
 
