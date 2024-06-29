@@ -1,5 +1,6 @@
 ﻿using RoguelikeGame.Color;
 using RoguelikeGame.Map.Actors;
+using RoguelikeGame.Systems.Event;
 using RogueSharp.DiceNotation;
 using System;
 using System.Collections.Generic;
@@ -34,6 +35,7 @@ namespace RoguelikeGame.Core.Map.Actors
                 DropFunctions = new List<DropFunction> { Monster.HealingPotionDrop, Monster.GoldDrop },
                 Level = level
             };
+            EventSystem.Instance.OnActorDeath += (invoker, args) => kobold.DoDropsIfKilled(args);
 
             return kobold;
         }

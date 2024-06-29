@@ -36,7 +36,7 @@ namespace RoguelikeGame.Systems.Command.Commands
 
             int damage = hits - blocks;
 
-            commandSystem.EnqueueCommand(new ResolveDamage(defender, damage), executionPriority + 1);
+            commandSystem.EnqueueCommand(new ResolveDamage(defender, damage, attacker), executionPriority + 1);
         }
 
         private int ResolveAttack(Actor attacker, Actor defender, StringBuilder attackMessage)

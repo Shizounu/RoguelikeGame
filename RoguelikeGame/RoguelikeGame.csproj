@@ -59,6 +59,10 @@
     <Compile Include="Core\Command System\Command\ResolveDamage.cs" />
     <Compile Include="Core\Command System\Command\ResolveDeath.cs" />
     <Compile Include="Core\Command System\ICommand.cs" />
+    <Compile Include="Core\Event System\EventArgs.cs" />
+    <Compile Include="Core\Event System\EventArgs\ActorDamageArguments.cs" />
+    <Compile Include="Core\Event System\EventArgs\ActorDeathArguments.cs" />
+    <Compile Include="Core\Event System\EventSystem.cs" />
     <Compile Include="Core\Inventory System\HealingPotion.cs" />
     <Compile Include="Core\Inventory System\IConsumable.cs" />
     <Compile Include="Core\Inventory System\IItem.cs" />
@@ -101,5 +105,6 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

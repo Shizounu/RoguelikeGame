@@ -9,11 +9,12 @@ using RoguelikeGame.Color;
 using RoguelikeGame.Systems.Command;
 using RoguelikeGame.Systems.Command.Behaviour;
 using RoguelikeGame.Systems.Scheduling;
+using RoguelikeGame.Systems.Event.EventArguments;
 
 namespace RoguelikeGame.Map.Actors
 {
-    public class Monster : Actor
-    {
+    public class Monster : Actor {
+
         public int? TurnsAlerted { get; set; }
 
         public virtual void PerformAction()
@@ -76,6 +77,12 @@ namespace RoguelikeGame.Map.Actors
             }
         }
 
+        public void DoDropsIfKilled(ActorDeathArguments args)
+        {
+            if (args.Defender != this)
+                return;
+            DoDrops(Game.GetActiveMap(), this);
+        }
         public void DoDrops(DungeonMap map, Monster monster) {
             foreach (var item in DropFunctions) {
                 item.Invoke(map, monster);

@@ -196,8 +196,6 @@ namespace RoguelikeGame
             _messageConsole?.Update(_rootConsole);
             _statConsole?.Update(_rootConsole);
             _inventoryConsole?.Update(_rootConsole);
-
-
         }
         private void OnRootConsoleRender(object sender, UpdateEventArgs e)
         {
@@ -212,7 +210,7 @@ namespace RoguelikeGame
 
             _rootConsole.Draw();
 
-            _isDirty = true;
+            _isDirty = false;
         }
     }
 }
