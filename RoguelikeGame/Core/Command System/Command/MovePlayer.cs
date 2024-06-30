@@ -1,5 +1,6 @@
 ﻿using RoguelikeGame.Map;
 using RoguelikeGame.Map.Actors;
+using RoguelikeGame.Systems.MapManagment;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -46,7 +47,7 @@ namespace RoguelikeGame.Systems.Command.Commands
                     }
             }
 
-            Monster monster = Game.GetActiveMap().GetMonsterAt(x, y);
+            Monster monster = MapManager.Instance.GetActiveMap().GetMonsterAt(x, y);
 
             if (monster != null)
             {
@@ -55,7 +56,7 @@ namespace RoguelikeGame.Systems.Command.Commands
             }
 
 
-            Game.GetActiveMap().SetActorPosition(Game.Player, x, y);
+            MapManager.Instance.GetActiveMap().SetActorPosition(Game.Player, x, y);
         }
     }
 }

@@ -3,6 +3,7 @@
 using RogueSharp;
 
 using RoguelikeGame.Color;
+using RoguelikeGame.Systems.MapManagment;
 
 namespace RoguelikeGame.Map.Object
 {
@@ -28,7 +29,7 @@ namespace RoguelikeGame.Map.Object
         {
             Game.Player.AddGold(Amount);
 
-            Game.GetActiveMap().interactables.Remove(this);
+            MapManager.Instance.GetActiveMap().interactables.Remove(this);
         }
     }
 }

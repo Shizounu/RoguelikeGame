@@ -10,6 +10,7 @@ using RoguelikeGame.Systems.Command;
 using RoguelikeGame.Systems.Command.Behaviour;
 using RoguelikeGame.Systems.Scheduling;
 using RoguelikeGame.Systems.Event.EventArguments;
+using RoguelikeGame.Systems.MapManagment;
 
 namespace RoguelikeGame.Map.Actors
 {
@@ -65,9 +66,10 @@ namespace RoguelikeGame.Map.Actors
         }
         public static void HealingPotionDrop(DungeonMap map, Monster monster)
         {
-            if (Dice.Roll("1d10") == 10)
+            if(true)
+            //if (Dice.Roll("1d10") == 10)
             {
-                RoguelikeGame.Systems.Inventory.ItemDefinition.HealingPotion potion = new RoguelikeGame.Systems.Inventory.ItemDefinition.HealingPotion()
+                Systems.Inventory.ItemDefinition.HealingPotion potion = new RoguelikeGame.Systems.Inventory.ItemDefinition.HealingPotion()
                 {
                     X = monster.X,
                     Y = monster.Y
@@ -81,7 +83,7 @@ namespace RoguelikeGame.Map.Actors
         {
             if (args.Defender != this)
                 return;
-            DoDrops(Game.GetActiveMap(), this);
+            DoDrops(MapManager.Instance.GetActiveMap(), this);
         }
         public void DoDrops(DungeonMap map, Monster monster) {
             foreach (var item in DropFunctions) {
@@ -92,9 +94,8 @@ namespace RoguelikeGame.Map.Actors
         public override void OnSchedule()
         {
             PerformAction();
-            Game.GetActiveMap().SchedulingSystem.Add(this);
-
-            Game.GetActiveMap().SchedulingSystem.Get().OnSchedule();
+            MapManager.Instance.GetActiveMap().SchedulingSystem.Add(this);
+            MapManager.Instance.GetActiveMap().SchedulingSystem.Get().OnSchedule();
         }
     }
 }

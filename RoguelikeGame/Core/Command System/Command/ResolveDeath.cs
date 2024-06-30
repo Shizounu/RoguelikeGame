@@ -1,5 +1,6 @@
 ﻿using RoguelikeGame.Map.Actors;
 using RoguelikeGame.Systems.Event;
+using RoguelikeGame.Systems.MapManagment;
 using RoguelikeGame.Systems.Message;
 using System;
 using System.Collections.Generic;
@@ -36,7 +37,7 @@ namespace RoguelikeGame.Systems.Command.Commands
             }
             else if (defender is Monster monster)
             {
-                Game.GetActiveMap().RemoveMonster(monster);
+                MapManager.Instance.GetActiveMap().RemoveMonster(monster);
                 MessageLog.Instance.Add($"{defender.Name} died and dropped {defender.Gold} gold");
             }
         }

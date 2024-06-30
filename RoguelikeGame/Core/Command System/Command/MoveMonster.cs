@@ -1,5 +1,6 @@
 ﻿using RoguelikeGame.Map.Actors;
 using RoguelikeGame.Systems.Command;
+using RoguelikeGame.Systems.MapManagment;
 using RogueSharp;
 using System;
 using System.Collections.Generic;
@@ -22,7 +23,7 @@ namespace RoguelikeGame.Systems.Command.Commands
 
         public void Execute(CommandSystem commandSystem, int executionPriority = 0)
         {
-            if (!Game.GetActiveMap().SetActorPosition(monster, cell.X, cell.Y))
+            if (!MapManager.Instance.GetActiveMap().SetActorPosition(monster, cell.X, cell.Y))
             {
                 if (Game.Player.X == cell.X && Game.Player.Y == cell.Y)
                 {

@@ -59,6 +59,7 @@
     <Compile Include="Core\Command System\Command\ResolveDamage.cs" />
     <Compile Include="Core\Command System\Command\ResolveDeath.cs" />
     <Compile Include="Core\Command System\ICommand.cs" />
+    <Compile Include="Core\ConsoleDefinitions.cs" />
     <Compile Include="Core\Event System\EventArgs.cs" />
     <Compile Include="Core\Event System\EventArgs\ActorDamageArguments.cs" />
     <Compile Include="Core\Event System\EventArgs\ActorDeathArguments.cs" />
@@ -67,6 +68,7 @@
     <Compile Include="Core\Inventory System\IConsumable.cs" />
     <Compile Include="Core\Inventory System\IItem.cs" />
     <Compile Include="Core\Inventory System\ItemType.cs" />
+    <Compile Include="Core\Map Managment System\MapManager.cs" />
     <Compile Include="Core\Map\Actors\Actor.cs" />
     <Compile Include="Core\Map\Actors\GenericMonsters.cs" />
     <Compile Include="Core\Command System\Behaviours\StandardMoveAndAttack.cs" />

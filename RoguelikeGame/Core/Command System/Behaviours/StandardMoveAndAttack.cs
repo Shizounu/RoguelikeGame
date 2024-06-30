@@ -3,6 +3,7 @@ using RoguelikeGame.Map;
 using RoguelikeGame.Map.Actors;
 using RoguelikeGame.Systems.Message;
 using RoguelikeGame.Systems.Command.Commands;
+using RoguelikeGame.Systems.MapManagment;
 
 namespace RoguelikeGame.Systems.Command.Behaviour
 {
@@ -10,7 +11,7 @@ namespace RoguelikeGame.Systems.Command.Behaviour
     {
         public bool Act(Monster monster)
         {
-            DungeonMap dungeonMap = Game.GetActiveMap();
+            DungeonMap dungeonMap = MapManager.Instance.GetActiveMap();
             Player player = Game.Player;
             FieldOfView monsterFov = new FieldOfView(dungeonMap);
 

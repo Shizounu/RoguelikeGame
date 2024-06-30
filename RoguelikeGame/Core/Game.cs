@@ -8,6 +8,7 @@ using RoguelikeGame.Systems.RandomProvider;
 using RoguelikeGame.Systems.Command;
 using RoguelikeGame.Systems.Command.Commands;
 using RoguelikeGame.Systems.Scheduling;
+using RoguelikeGame.Systems.MapManagment;
 
 namespace RoguelikeGame
 {
@@ -28,8 +29,6 @@ namespace RoguelikeGame
 
 
         // The screen height and width are in number of tiles
-        private static readonly int _screenWidth = 100;
-        private static readonly int _screenHeight = 70;
         private static RLRootConsole _rootConsole;
 
         public static SubConsole _mapConsole;
@@ -39,15 +38,13 @@ namespace RoguelikeGame
         public static SubConsole _inventoryConsole;
 
         public static Map.Actors.Player Player;
-        public static Dictionary<int, DungeonMap> GeneratedMaps;
 
         private const string fontFileName = "terminal8x8.png";
         private const string consoleTitle = "Roguesharp Roguelike";
         public void Init()
         {
             
-            _rootConsole = new RLRootConsole(fontFileName, _screenWidth, _screenHeight, 8, 8, 1f, consoleTitle);
-            GeneratedMaps = new Dictionary<int, DungeonMap>();
+            _rootConsole = new RLRootConsole(fontFileName, ConsoleDefinitions.RootConsoleWidth, ConsoleDefinitions.RootConsoleHeight, 8, 8, 1f, consoleTitle);
 
             InitMap();
             InitStats();
@@ -71,14 +68,17 @@ namespace RoguelikeGame
         {
 
             _rootConsole.Update += (obj, args) => InputSystem.Instance.CheckInput(_rootConsole);
-            _rootConsole.Update += (obj, args) => InputSystem.Instance.CheckClickables(_rootConsole);
+            _rootConsole.Update += (obj, args) => {
+                if (InputSystem.Instance.CheckClickables(_rootConsole))
+                    _isDirty = true; 
+                };
 
             InputSystem.Instance.OnUserInput += () => _isDirty = true;
             InputSystem.Instance.OnUserInput += () => Player.IsPlayerTurn = false;
             InputSystem.Instance.OnUserInput += () =>
             {
                 if (!Player.IsPlayerTurn) {
-                    GetActiveMap().SchedulingSystem.Get().OnSchedule();
+                    MapManager.Instance.GetActiveMap().SchedulingSystem.Get().OnSchedule();
                     _isDirty = true;
                 }
             };
@@ -89,7 +89,7 @@ namespace RoguelikeGame
             InputSystem.Instance.OnRightInput += () => CommandSystem.Instance.EnqueueCommand(new MovePlayer(Direction.Right));
             InputSystem.Instance.OnInteractInput += () =>
             {
-                List<IInteractable> interactables = GetActiveMap().GetInteractablesAt(Player.X, Player.Y);
+                List<IInteractable> interactables = MapManager.Instance.GetActiveMap().GetInteractablesAt(Player.X, Player.Y);
                 foreach (var item in interactables)
                 {
                     item.Interact();
@@ -101,28 +101,28 @@ namespace RoguelikeGame
         }
         private static void InitMap()
         {
-            _mapConsole = new SubConsole(80, 48);
+            _mapConsole = new SubConsole(ConsoleDefinitions.MapConsoleWidth, ConsoleDefinitions.MapConsoleHeight);
 
-            GetMap(1, true);
+            MapManager.Instance.GetMap(1, true);
 
             //Update Calls
-            _mapConsole.OnUpdate += (console, root) => GetActiveMap().UpdatePlayerFieldOfView();
-            _mapConsole.OnUpdate += (console, root) =>
+            _mapConsole.OnUpdate += (console, root) => MapManager.Instance.GetActiveMap().UpdatePlayerFieldOfView();
+            /*_mapConsole.OnUpdate += (console, root) =>
             {
                 if(Player.Health <= 0)
                     _rootConsole.Close();
-            };
+            };*/
             _mapConsole.OnUpdate += (console, root) => CommandSystem.Instance.DoAllCommands();
             //Draw Calls
-            _mapConsole.OnDraw += (console, root) => GetActiveMap().Draw(console.console);
-            _mapConsole.OnDraw += (console, root) => Player.Draw(console.console, GetActiveMap());
+            _mapConsole.OnDraw += (console, root) => MapManager.Instance.GetActiveMap().Draw(console.console);
+            _mapConsole.OnDraw += (console, root) => Player.Draw(console.console, MapManager.Instance.GetActiveMap());
 
 
             _mapConsole.OnDraw += (console, root) => console.Blit(root, 0, 11);
         }
         private static void InitMessage()
         {
-            _messageConsole = new SubConsole(80, 11);
+            _messageConsole = new SubConsole(ConsoleDefinitions.MessageConsoleWidth, ConsoleDefinitions.MessageConsoleHeight);
             MessageLog.Instance.Add($"The rogue arrives on level {Player.CurrentLayer}");
             MessageLog.Instance.Add($"Level created with seed '{RandomProvider.Instance.Seed}'");
 
@@ -130,25 +130,23 @@ namespace RoguelikeGame
 
             //Draws
             _messageConsole.OnDraw += (console, root) => MessageLog.Instance.Draw(console.console);
-            _messageConsole.OnDraw += (console, root) => console.Blit(root, 0, _screenHeight - 11);
+            _messageConsole.OnDraw += (console, root) => console.Blit(root, 0, ConsoleDefinitions.RootConsoleHeight - ConsoleDefinitions.MessageConsoleHeight);
         }
         private static void InitStats()
         {
             //_statConsole = new SubConsole(20, 70);
-            _statConsole = new SubConsole(20, 11);
-            _enemyHealthConsole = new SubConsole(20, 11);
+            _statConsole = new SubConsole(ConsoleDefinitions.StatConsoleWidth, ConsoleDefinitions.StatConsoleHeight);
+            _enemyHealthConsole = new SubConsole(ConsoleDefinitions.StatConsoleWidth, ConsoleDefinitions.StatConsoleHeight);
 
             //Update
 
 
             //Draw
             _statConsole.OnDraw += (console, root) => Player.DrawStats(console.console);
-
-            
             _enemyHealthConsole.OnDraw += (console, root) => {
                 int i = 0;
-                foreach (var Monster in GetActiveMap().Monsters) {
-                    if(GetActiveMap().IsInFov(Monster.X, Monster.Y))
+                foreach (var Monster in MapManager.Instance.GetActiveMap().Monsters) {
+                    if(MapManager.Instance.GetActiveMap().IsInFov(Monster.X, Monster.Y))
                     {
                         Monster.DrawStats(console.console, i);
                         i++;
@@ -163,30 +161,13 @@ namespace RoguelikeGame
         }
         private static void InitInventory()
         {
-            //_inventoryConsole = new SubConsole(80, 11);
-            _inventoryConsole = new SubConsole(20, 70);
+            _inventoryConsole = new SubConsole(ConsoleDefinitions.InventoryConsoleWidth, ConsoleDefinitions.InventoryConsoleHeight);
 
             //Update
             
-
             //Draw
             _inventoryConsole.OnDraw += (console, root) => Player.DrawInventory(console.console, 80, 0);
-
-            //_inventoryConsole.OnDraw += (console, root) => console.Blit(root, 0, 0);
             _inventoryConsole.OnDraw += (console, root) => console.Blit(root, 80, 0);
-        }
-
-
-        public static DungeonMap GetMap(int Layer, bool Descending) {
-            if(GeneratedMaps.ContainsKey(Layer)) 
-                return GeneratedMaps[Layer];
-
-            DungeonMap map = MapGenerator.CreateMap(_mapConsole.Width, _mapConsole.Height, 20, 7, 13, Layer, Descending);
-            GeneratedMaps.Add(Layer, map);
-            return map;
-        }
-        public static DungeonMap GetActiveMap() {
-            return GeneratedMaps[Player.CurrentLayer];
         }
 
 

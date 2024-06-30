@@ -8,6 +8,7 @@ using RoguelikeGame.Systems.Input;
 using RoguelikeGame.Systems.Message;
 using System;
 using System.Security.Cryptography.X509Certificates;
+using RoguelikeGame.Systems.MapManagment;
 
 ///TODO: Too much of an Uber class - refractor into components
 namespace RoguelikeGame.Map.Actors
@@ -148,10 +149,11 @@ namespace RoguelikeGame.Map.Actors
         }
 
         #endregion
+       
         public override void OnSchedule()
         {
             IsPlayerTurn = true;
-            Game.GetActiveMap().SchedulingSystem.Add(Game.Player);
+            MapManager.Instance.GetActiveMap().SchedulingSystem.Add(Game.Player);
         }
 
     }

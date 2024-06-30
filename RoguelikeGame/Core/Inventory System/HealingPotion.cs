@@ -5,6 +5,7 @@ using RogueSharp.DiceNotation;
 using RoguelikeGame.Map;
 using RoguelikeGame.Color;
 using RoguelikeGame.Systems.Message;
+using RoguelikeGame.Systems.MapManagment;
 
 namespace RoguelikeGame.Systems.Inventory.ItemDefinition
 {
@@ -38,7 +39,7 @@ namespace RoguelikeGame.Systems.Inventory.ItemDefinition
         public void Interact()
         {
             Game.Player.AddItem(this);
-            Game.GetActiveMap().interactables.Remove(this);
+            MapManager.Instance.GetActiveMap().interactables.Remove(this);
         }
 
         public void Use()

@@ -2,6 +2,7 @@
 using RogueSharp;
 using RoguelikeGame.Color;
 using RoguelikeGame.Systems.Message;
+using RoguelikeGame.Systems.MapManagment;
 
 namespace RoguelikeGame.Map.Object
 {
@@ -34,10 +35,10 @@ namespace RoguelikeGame.Map.Object
             bool descending = (TargetLayer > Game.Player.CurrentLayer);
 
             //Remove from old map
-            Game.GetActiveMap().RemovePlayer(Game.Player);
+            MapManager.Instance.GetActiveMap().RemovePlayer(Game.Player);
 
             //add to new map
-            DungeonMap map = Game.GetMap(TargetLayer, descending);
+            DungeonMap map = MapManager.Instance.GetMap(TargetLayer, descending);
             Game.Player.CurrentLayer = TargetLayer;
             map.AddPlayer(Game.Player, descending);
 

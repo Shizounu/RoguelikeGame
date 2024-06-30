@@ -1,5 +1,6 @@
 ﻿using RLNET;
 using System.Collections.Generic;
+using System.Data.SqlTypes;
 
 namespace RoguelikeGame.Systems.Input
 {
@@ -72,16 +73,19 @@ namespace RoguelikeGame.Systems.Input
         public void RemoveClickable(IClickable clickable) {
             clickables.Remove(clickable);
         }
-        public void CheckClickables(RLRootConsole rootConsole) {
-
-            foreach (var clickable in clickables)
-            {
+        public bool CheckClickables(RLRootConsole rootConsole) {
+            if(clickables.Count == 0)
+                return false;
+            bool returnVal = false;
+            foreach (var clickable in clickables) {
+                if (clickable.IsHovered || clickable.WasClickedThisFrame)
+                    returnVal = true;
                 clickable.IsHovered = false; 
                 clickable.WasClickedThisFrame = false;
             }
-
             int mouseX = rootConsole.Mouse.X;
             int mouseY = rootConsole.Mouse.Y; 
+            
             foreach (var clickable in clickables) {
                 if(IsMouseInBounds(clickable, mouseX, mouseY)) {
                     clickable.IsHovered = true;
@@ -90,9 +94,12 @@ namespace RoguelikeGame.Systems.Input
                         clickable.OnClick();
                         clickable.WasClickedThisFrame = true;
                     }
-                    break; //only one item can be clicked at a time
+                    //only one item can be hovered  at a time
+                    returnVal = true;
+                    break; 
                 }
             }
+            return returnVal; 
         }
         private bool IsMouseInBounds(IClickable clickable, int mouseX, int mouseY) {
             //Clickable X/Y is always the top left corner of a window
