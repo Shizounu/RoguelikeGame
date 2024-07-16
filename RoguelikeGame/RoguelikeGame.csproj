@@ -70,6 +70,9 @@
     <Compile Include="Core\Inventory System\ItemType.cs" />
     <Compile Include="Core\Map Managment System\MapManager.cs" />
     <Compile Include="Core\Map\Actors\Actor.cs" />
+    <Compile Include="Core\Map\Actors\Drops\GoldDrop.cs" />
+    <Compile Include="Core\Map\Actors\Drops\InteractableDrop.cs" />
+    <Compile Include="Core\Map\Actors\Drops\ItemDrops.cs" />
     <Compile Include="Core\Map\Actors\GenericMonsters.cs" />
     <Compile Include="Core\Command System\Behaviours\StandardMoveAndAttack.cs" />
     <Compile Include="Core\Color\Color.cs" />

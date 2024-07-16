@@ -9,6 +9,8 @@ using RoguelikeGame.Systems.Message;
 using System;
 using System.Security.Cryptography.X509Certificates;
 using RoguelikeGame.Systems.MapManagment;
+using RoguelikeGame.Systems.Event;
+using RoguelikeGame.Systems.Event.EventArguments;
 
 ///TODO: Too much of an Uber class - refractor into components
 namespace RoguelikeGame.Map.Actors
@@ -29,6 +31,8 @@ namespace RoguelikeGame.Map.Actors
             Name = "Rogue";
             Speed = 10;
             Symbol = '@';
+
+            EventSystem.Instance.OnActorDeath += (sender, args) => AddExperience(args);
         }
 
         public int CurrentLayer = 1;
@@ -94,6 +98,13 @@ namespace RoguelikeGame.Map.Actors
 
         public int ExperienceRequired { get => 10 + (int)Math.Round(Level * 1.5); }
         private int CurrentExperience; 
+        private void AddExperience(ActorDeathArguments args)
+        {
+            if (args.Attacker == this) {
+                AddExperience(args.Defender.Level);
+            }
+        }
+        
         public void AddExperience(int amount) {
             CurrentExperience += amount;
             if (CurrentExperience >= ExperienceRequired)

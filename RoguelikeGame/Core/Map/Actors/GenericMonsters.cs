@@ -1,14 +1,10 @@
 ﻿using RoguelikeGame.Color;
 using RoguelikeGame.Map.Actors;
+using RoguelikeGame.Map.Actors.Drops;
 using RoguelikeGame.Systems.Event;
+using RoguelikeGame.Systems.Inventory.ItemDefinition;
 using RogueSharp.DiceNotation;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Reflection.Emit;
-using System.Text;
-using System.Threading.Tasks;
-using static RoguelikeGame.Map.Actors.Monster;
 
 namespace RoguelikeGame.Core.Map.Actors
 {
@@ -32,7 +28,7 @@ namespace RoguelikeGame.Core.Map.Actors
                 Speed = 14,
                 Symbol = 'k',
 
-                DropFunctions = new List<DropFunction> { Monster.HealingPotionDrop, Monster.GoldDrop },
+                DropFunctions = new List<ItemDrop> { new GoldDrop(), new InteractableDrop<HealingPotion>() },
                 Level = level
             };
             EventSystem.Instance.OnActorDeath += (invoker, args) => kobold.DoDropsIfKilled(args);

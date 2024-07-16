@@ -1,12 +1,6 @@
 ﻿using RoguelikeGame.Map.Actors;
 using RoguelikeGame.Systems.Event;
 using RoguelikeGame.Systems.Message;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace RoguelikeGame.Systems.Command.Commands
 {
@@ -14,6 +8,7 @@ namespace RoguelikeGame.Systems.Command.Commands
         public ResolveDamage(Actor defender, int damage, Actor attacker)
         {
             this.defender = defender;
+            this.attacker = attacker;
             this.damage = damage;
         }
 

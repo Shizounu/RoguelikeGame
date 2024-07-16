@@ -11,6 +11,7 @@ using RoguelikeGame.Systems.Command.Behaviour;
 using RoguelikeGame.Systems.Scheduling;
 using RoguelikeGame.Systems.Event.EventArguments;
 using RoguelikeGame.Systems.MapManagment;
+using RoguelikeGame.Map.Actors.Drops;
 
 namespace RoguelikeGame.Map.Actors
 {
@@ -45,39 +46,8 @@ namespace RoguelikeGame.Map.Actors
             statConsole.Print(2, yPosition, $": {Name}", Palette.DbLight);
         }
 
-        public delegate void DropFunction(DungeonMap map, Monster monster);
-        public List<DropFunction> DropFunctions;
-
-
-        public static void GoldDrop(DungeonMap map, Monster monster)
-        {
-            if (monster.Gold > 0)
-            {
-                RoguelikeGame.Map.Object.GoldPile goldPile = new RoguelikeGame.Map.Object.GoldPile
-                {
-                    X = monster.X,
-                    Y = monster.Y,
-                    Amount = monster.Gold
-                };
-
-
-                map.AddInteractable(goldPile);
-            }
-        }
-        public static void HealingPotionDrop(DungeonMap map, Monster monster)
-        {
-            if(true)
-            //if (Dice.Roll("1d10") == 10)
-            {
-                Systems.Inventory.ItemDefinition.HealingPotion potion = new RoguelikeGame.Systems.Inventory.ItemDefinition.HealingPotion()
-                {
-                    X = monster.X,
-                    Y = monster.Y
-                };
-
-                map.AddInteractable(potion);
-            }
-        }
+        
+        public List<ItemDrop> DropFunctions;
 
         public void DoDropsIfKilled(ActorDeathArguments args)
         {
@@ -87,7 +57,7 @@ namespace RoguelikeGame.Map.Actors
         }
         public void DoDrops(DungeonMap map, Monster monster) {
             foreach (var item in DropFunctions) {
-                item.Invoke(map, monster);
+                item.DoDrop(map, monster);
             }
         }
 
