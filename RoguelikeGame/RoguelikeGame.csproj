@@ -15,7 +15,8 @@
     <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
+    <PlatformTarget>x64</PlatformTarget>
+    <Prefer32Bit>false</Prefer32Bit>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -25,7 +26,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
+    <PlatformTarget>x64</PlatformTarget>
+    <Prefer32Bit>false</Prefer32Bit>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
@@ -50,6 +52,7 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Net.Http" />
+    <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
@@ -69,6 +72,7 @@
     <Compile Include="Core\Inventory System\IItem.cs" />
     <Compile Include="Core\Inventory System\ItemType.cs" />
     <Compile Include="Core\Map Managment System\MapManager.cs" />
+    <Compile Include="Core\Map Managment System\StaticMapFileService.cs" />
     <Compile Include="Core\Map\Actors\Actor.cs" />
     <Compile Include="Core\Map\Actors\Drops\GoldDrop.cs" />
     <Compile Include="Core\Map\Actors\Drops\InteractableDrop.cs" />
@@ -80,9 +84,11 @@
     <Compile Include="Core\Map\Map\Door.cs" />
     <Compile Include="Core\Map\Map\DungeonMap.cs" />
     <Compile Include="Core\Map\Actors\Monster.cs" />
+    <Compile Include="Core\Map\Actors\NonPlayerCharacter.cs" />
     <Compile Include="Core\Map\Actors\Player.cs" />
     <Compile Include="Core\Map\Map\GoldPile.cs" />
     <Compile Include="Core\Map\Map\Stairs.cs" />
+    <Compile Include="Core\Map\Map\WorldGenerator.cs" />
     <Compile Include="Core\Command System\IBehaviour.cs" />
     <Compile Include="Core\Map\Map\IInteractable.cs" />
     <Compile Include="Core\Input System\IClickable.cs" />
@@ -108,6 +114,9 @@
   <ItemGroup>
     <Content Include="terminal8x8.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="StaticMaps\*.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
   <ItemGroup />

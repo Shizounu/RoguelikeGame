@@ -28,3 +28,17 @@ C:\_Projects\RoguelikeGame\RoguelikeGame\obj\Debug\RoguelikeGame.csproj.CoreComp
 C:\_Projects\RoguelikeGame\RoguelikeGame\obj\Debug\RoguelikeGame.csproj.CopyComplete
 C:\_Projects\RoguelikeGame\RoguelikeGame\obj\Debug\RoguelikeGame.exe
 C:\_Projects\RoguelikeGame\RoguelikeGame\obj\Debug\RoguelikeGame.pdb
+F:\Projects\RoguelikeGame\RoguelikeGame\bin\Debug\terminal8x8.png
+F:\Projects\RoguelikeGame\RoguelikeGame\bin\Debug\RoguelikeGame.exe.config
+F:\Projects\RoguelikeGame\RoguelikeGame\bin\Debug\RoguelikeGame.exe
+F:\Projects\RoguelikeGame\RoguelikeGame\bin\Debug\RoguelikeGame.pdb
+F:\Projects\RoguelikeGame\RoguelikeGame\bin\Debug\OpenTK.dll
+F:\Projects\RoguelikeGame\RoguelikeGame\bin\Debug\RLNET.dll
+F:\Projects\RoguelikeGame\RoguelikeGame\bin\Debug\RogueSharp.dll
+F:\Projects\RoguelikeGame\RoguelikeGame\bin\Debug\OpenTK.xml
+F:\Projects\RoguelikeGame\RoguelikeGame\bin\Debug\OpenTK.dll.config
+F:\Projects\RoguelikeGame\RoguelikeGame\obj\Debug\RoguelikeGame.csproj.AssemblyReference.cache
+F:\Projects\RoguelikeGame\RoguelikeGame\obj\Debug\RoguelikeGame.csproj.CoreCompileInputs.cache
+F:\Projects\RoguelikeGame\RoguelikeGame\obj\Debug\Roguelik.62771385.Up2Date
+F:\Projects\RoguelikeGame\RoguelikeGame\obj\Debug\RoguelikeGame.exe
+F:\Projects\RoguelikeGame\RoguelikeGame\obj\Debug\RoguelikeGame.pdb

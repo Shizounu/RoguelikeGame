@@ -162,13 +162,18 @@ namespace RoguelikeGame.Map.Actors
         public char Symbol { get; set; }
         public int X { get; set; }
         public int Y { get; set; }
-        public void Draw(RLConsole console, IMap map)
+        public virtual void Draw(RLConsole console, IMap map)
         {
             if (!map.GetCell(X, Y).IsExplored)
                 return;
 
-            if (map.IsInFov(X, Y))
-                console.Set(X, Y, Color, Colors.FloorBackgroundFov, Symbol);
+            DungeonMap dungeonMap = map as DungeonMap;
+            bool isVisible = dungeonMap == null ? map.IsInFov(X, Y) : dungeonMap.IsVisible(X, Y);
+            if (isVisible)
+                console.Set(X, Y,
+                    dungeonMap == null ? Color : dungeonMap.ApplyPalette(Color),
+                    dungeonMap == null ? Colors.FloorBackgroundFov : dungeonMap.ApplyPalette(Colors.FloorBackgroundFov),
+                    Symbol);
             else // When not in field-of-view just draw a normal floor
                 console.Set(X, Y, Colors.Floor, Colors.FloorBackground, '.');
         }

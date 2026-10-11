@@ -1,6 +1,7 @@
 ﻿using RLNET;
 using System.Collections.Generic;
 
+using RoguelikeGame.Color;
 using RoguelikeGame.Map;
 using RoguelikeGame.Systems.Input;
 using RoguelikeGame.Systems.Message;
@@ -43,8 +44,20 @@ namespace RoguelikeGame
         private const string consoleTitle = "Roguesharp Roguelike";
         public void Init()
         {
-            
-            _rootConsole = new RLRootConsole(fontFileName, ConsoleDefinitions.RootConsoleWidth, ConsoleDefinitions.RootConsoleHeight, 8, 8, 1f, consoleTitle);
+            RLSettings settings = new RLSettings
+            {
+                BitmapFile = fontFileName,
+                Width = ConsoleDefinitions.RootConsoleWidth,
+                Height = ConsoleDefinitions.RootConsoleHeight,
+                CharWidth = 8,
+                CharHeight = 8,
+                Scale = 1f,
+                Title = consoleTitle,
+                WindowBorder = RLWindowBorder.Resizable,
+                ResizeType = RLResizeType.ResizeScale
+            };
+
+            _rootConsole = new RLRootConsole(settings);
 
             InitMap();
             InitStats();
@@ -89,7 +102,7 @@ namespace RoguelikeGame
             InputSystem.Instance.OnRightInput += () => CommandSystem.Instance.EnqueueCommand(new MovePlayer(Direction.Right));
             InputSystem.Instance.OnInteractInput += () =>
             {
-                List<IInteractable> interactables = MapManager.Instance.GetActiveMap().GetInteractablesAt(Player.X, Player.Y);
+                List<IInteractable> interactables = MapManager.Instance.GetActiveMap().GetInteractablesInReach(Player.X, Player.Y);
                 foreach (var item in interactables)
                 {
                     item.Interact();
@@ -103,7 +116,7 @@ namespace RoguelikeGame
         {
             _mapConsole = new SubConsole(ConsoleDefinitions.MapConsoleWidth, ConsoleDefinitions.MapConsoleHeight);
 
-            MapManager.Instance.GetMap(1, true);
+            MapManager.Instance.InitializeWorld();
 
             //Update Calls
             _mapConsole.OnUpdate += (console, root) => MapManager.Instance.GetActiveMap().UpdatePlayerFieldOfView();
@@ -116,20 +129,25 @@ namespace RoguelikeGame
             //Draw Calls
             _mapConsole.OnDraw += (console, root) => MapManager.Instance.GetActiveMap().Draw(console.console);
             _mapConsole.OnDraw += (console, root) => Player.Draw(console.console, MapManager.Instance.GetActiveMap());
-
-
             _mapConsole.OnDraw += (console, root) => console.Blit(root, 0, 11);
+            _mapConsole.OnDraw += (console, root) => DrawPanelHeader(root,
+                MapManager.Instance.GetActiveMap().DisplayName, 0, 10,
+                ConsoleDefinitions.MapConsoleWidth, Palette.DbLight, Palette.SecondaryDarkest);
         }
         private static void InitMessage()
         {
             _messageConsole = new SubConsole(ConsoleDefinitions.MessageConsoleWidth, ConsoleDefinitions.MessageConsoleHeight);
-            MessageLog.Instance.Add($"The rogue arrives on level {Player.CurrentLayer}");
+            MessageLog.Instance.Add("The rogue arrives in the wilds beyond Haven.");
+            MessageLog.Instance.Add("'C' leads to Haven; 'D' marks the dungeon.");
+            MessageLog.Instance.Add("Move beside a marker and press Q to travel.");
             MessageLog.Instance.Add($"Level created with seed '{RandomProvider.Instance.Seed}'");
 
             //Updates
 
             //Draws
             _messageConsole.OnDraw += (console, root) => MessageLog.Instance.Draw(console.console);
+            _messageConsole.OnDraw += (console, root) => DrawPanelHeader(console.console, "MESSAGE LOG", 0, 0,
+                console.Width, Palette.AlternateLightest, Palette.AlternateDarkest);
             _messageConsole.OnDraw += (console, root) => console.Blit(root, 0, ConsoleDefinitions.RootConsoleHeight - ConsoleDefinitions.MessageConsoleHeight);
         }
         private static void InitStats()
@@ -143,20 +161,25 @@ namespace RoguelikeGame
 
             //Draw
             _statConsole.OnDraw += (console, root) => Player.DrawStats(console.console);
+            _statConsole.OnDraw += (console, root) => DrawPanelHeader(console.console, "PLAYER", 0, 0,
+                console.Width, Palette.DbLight, Palette.PrimaryDarker);
             _enemyHealthConsole.OnDraw += (console, root) => {
                 int i = 0;
                 foreach (var Monster in MapManager.Instance.GetActiveMap().Monsters) {
                     if(MapManager.Instance.GetActiveMap().IsInFov(Monster.X, Monster.Y))
                     {
+                        if (i >= console.Height / 2)
+                            break;
+
                         Monster.DrawStats(console.console, i);
                         i++;
                     }
                 }
             };
+            _enemyHealthConsole.OnDraw += (console, root) => DrawPanelHeader(console.console, "ENEMIES", 0, 0,
+                console.Width, Palette.DbLight, Palette.DbOldBlood);
             
-
-            //_statConsole.OnDraw += (console, root) => console.Blit(root, 80, 0);
-            _statConsole.OnDraw += (console, root) =>  console.Blit(root, 0, 0);
+            _statConsole.OnDraw += (console, root) => console.Blit(root, 0, 0);
             _enemyHealthConsole.OnDraw += (console, root) => console.Blit(root, 20, 0);
         }
         private static void InitInventory()
@@ -167,9 +190,17 @@ namespace RoguelikeGame
             
             //Draw
             _inventoryConsole.OnDraw += (console, root) => Player.DrawInventory(console.console, 80, 0);
+            _inventoryConsole.OnDraw += (console, root) => DrawPanelHeader(console.console, "INVENTORY", 0, 0,
+                console.Width, Palette.DbLight, Palette.DbDeepWater);
             _inventoryConsole.OnDraw += (console, root) => console.Blit(root, 80, 0);
         }
 
+        private static void DrawPanelHeader(RLConsole console, string title, int x, int y, int width,
+            RLColor foreground, RLColor background)
+        {
+            console.SetBackColor(x, y, width, 1, background);
+            console.Print(x + 1, y, title, foreground, background);
+        }
 
         private void OnRootConsoleUpdate(object sender, UpdateEventArgs e)
         {

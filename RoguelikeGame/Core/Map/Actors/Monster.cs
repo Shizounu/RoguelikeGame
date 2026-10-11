@@ -27,9 +27,8 @@ namespace RoguelikeGame.Map.Actors
 
         public void DrawStats(RLConsole statConsole, int position)
         {
-            // Start at Y=13 which is below the player stats.
-            // Multiply the position by 2 to leave a space between each stat
-            int yPosition = (position * 2);
+            // Leave row 0 for the panel heading and space entries by one row.
+            int yPosition = (position * 2) + 1;
 
             // Begin the line by printing the symbol of the monster in the appropriate color
             statConsole.Print(1, yPosition, Symbol.ToString(), Color);

@@ -1,0 +1,16 @@
+F:\Projects\RoguelikeGame\RoguelikeGame\bin\Release\terminal8x8.png
+F:\Projects\RoguelikeGame\RoguelikeGame\bin\Release\RoguelikeGame.exe.config
+F:\Projects\RoguelikeGame\RoguelikeGame\bin\Release\RoguelikeGame.exe
+F:\Projects\RoguelikeGame\RoguelikeGame\bin\Release\RoguelikeGame.pdb
+F:\Projects\RoguelikeGame\RoguelikeGame\bin\Release\OpenTK.dll
+F:\Projects\RoguelikeGame\RoguelikeGame\bin\Release\RLNET.dll
+F:\Projects\RoguelikeGame\RoguelikeGame\bin\Release\RogueSharp.dll
+F:\Projects\RoguelikeGame\RoguelikeGame\bin\Release\OpenTK.xml
+F:\Projects\RoguelikeGame\RoguelikeGame\bin\Release\OpenTK.dll.config
+F:\Projects\RoguelikeGame\RoguelikeGame\obj\Release\RoguelikeGame.csproj.AssemblyReference.cache
+F:\Projects\RoguelikeGame\RoguelikeGame\obj\Release\RoguelikeGame.csproj.CoreCompileInputs.cache
+F:\Projects\RoguelikeGame\RoguelikeGame\obj\Release\Roguelik.62771385.Up2Date
+F:\Projects\RoguelikeGame\RoguelikeGame\obj\Release\RoguelikeGame.exe
+F:\Projects\RoguelikeGame\RoguelikeGame\obj\Release\RoguelikeGame.pdb
+F:\Projects\RoguelikeGame\RoguelikeGame\bin\Release\StaticMaps\city_haven.json
+F:\Projects\RoguelikeGame\RoguelikeGame\bin\Release\StaticMaps\overworld.json

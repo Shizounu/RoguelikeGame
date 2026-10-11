@@ -14,12 +14,17 @@ namespace RoguelikeGame.Map.Object
         public int Y { get; set; }
 
         public int TargetLayer;
+        public string TargetMapId;
+        public int? TargetX;
+        public int? TargetY;
 
         public void Draw(RLConsole console, IMap map) {
             if (!map.GetCell(X, Y).IsExplored)
                 return;
 
-            if (map.IsInFov(X, Y)) {
+            DungeonMap dungeonMap = map as DungeonMap;
+            bool isVisible = dungeonMap == null ? map.IsInFov(X, Y) : dungeonMap.IsVisible(X, Y);
+            if (isVisible) {
                 Color = Colors.Player;
             }
             else
@@ -27,11 +32,22 @@ namespace RoguelikeGame.Map.Object
                 Color = Colors.Floor;
             }
 
-            console.Set(X, Y, Color, null, Symbol);
+            console.Set(X, Y, dungeonMap == null ? Color : dungeonMap.ApplyPalette(Color), null, Symbol);
         }
 
         public void Interact()
         {
+            if (!string.IsNullOrEmpty(TargetMapId))
+            {
+                if (TargetX.HasValue != TargetY.HasValue)
+                    throw new System.InvalidOperationException(
+                        $"Stairs leading to '{TargetMapId}' must define both arrival coordinates or neither.");
+
+                MapManager.Instance.TransitionPlayer(Game.Player, TargetMapId, TargetX, TargetY);
+                MessageLog.Instance.Add($"The Rogue travels to {TargetMapId}");
+                return;
+            }
+
             bool descending = (TargetLayer > Game.Player.CurrentLayer);
 
             //Remove from old map
@@ -40,6 +56,7 @@ namespace RoguelikeGame.Map.Object
             //add to new map
             DungeonMap map = MapManager.Instance.GetMap(TargetLayer, descending);
             Game.Player.CurrentLayer = TargetLayer;
+            Game.Player.CurrentMapId = MapManager.GetDungeonMapId(TargetLayer);
             map.AddPlayer(Game.Player, descending);
 
 

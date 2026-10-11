@@ -1,0 +1,15 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "RoguelikeGame",
+            "type": "clr",
+            "request": "launch",
+            "preLaunchTask": "build",
+            "program": "${workspaceFolder}/RoguelikeGame/bin/Debug/RoguelikeGame.exe",
+            "args": [],
+            "cwd": "${workspaceFolder}/RoguelikeGame/bin/Debug",
+            "stopAtEntry": false
+        }
+    ]
+}

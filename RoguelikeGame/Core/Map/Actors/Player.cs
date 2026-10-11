@@ -36,6 +36,7 @@ namespace RoguelikeGame.Map.Actors
         }
 
         public int CurrentLayer = 1;
+        public string CurrentMapId = "dungeon:1";
         public bool IsPlayerTurn = true; 
 
         public void Heal(int amount)

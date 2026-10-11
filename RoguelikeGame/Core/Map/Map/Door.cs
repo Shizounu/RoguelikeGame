@@ -29,7 +29,9 @@ namespace RoguelikeGame.Map.Object
             }
 
             Symbol = IsOpen ? '-' : '+';
-            if (map.IsInFov(X, Y))
+            DungeonMap dungeonMap = map as DungeonMap;
+            bool isVisible = dungeonMap == null ? map.IsInFov(X, Y) : dungeonMap.IsVisible(X, Y);
+            if (isVisible)
             {
                 Color = Colors.DoorFov;
                 BackgroundColor = Colors.DoorBackgroundFov;
@@ -40,7 +42,9 @@ namespace RoguelikeGame.Map.Object
                 BackgroundColor = Colors.DoorBackground;
             }
 
-            console.Set(X, Y, Color, BackgroundColor, Symbol);
+            RLColor drawColor = dungeonMap == null ? Color : dungeonMap.ApplyPalette(Color);
+            RLColor drawBackground = dungeonMap == null ? BackgroundColor : dungeonMap.ApplyPalette(BackgroundColor);
+            console.Set(X, Y, drawColor, drawBackground, Symbol);
         }
     }
 }

@@ -1,6 +1,5 @@
-﻿using RLNET;
+using RLNET;
 using System.Collections.Generic;
-using System.Data.SqlTypes;
 
 namespace RoguelikeGame.Systems.Input
 {
@@ -52,7 +51,7 @@ namespace RoguelikeGame.Systems.Input
                 case RLKey.Period:
                 case RLKey.Q: 
                     OnInteractInput?.Invoke();
-                    OnUserInput.Invoke();
+                    OnUserInput?.Invoke();
                     break;
 
 
