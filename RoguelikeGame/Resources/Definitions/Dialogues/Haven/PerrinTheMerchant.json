@@ -1,0 +1,19 @@
+{
+  "Dialogues": [
+    {
+      "Id": "Dialogues.Haven.PerrinTheMerchant",
+      "EntryNodes": [
+        { "Priority": 0, "NodeId": "Greeting" }
+      ],
+      "Nodes": [
+        {
+          "Id": "Greeting",
+          "Type": "Sentence",
+          "Speaker": "Perrin the merchant",
+          "Text": "One day I'll have a stall in every town.",
+          "Branches": []
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,34 @@
+{
+  "Enemies": [
+    {
+      "Id": "Enemies.Kobold",
+      "Name": "Kobold",
+      "Awareness": 10,
+      "Speed": 14,
+      "Symbol": "k",
+      "ColorRole": "Palettes.Dawnbringer.DbBrightWood",
+      "Behavior": "AI.StandardMoveAndAttack",
+      "HealthDice": "2d5",
+      "AttackDice": "1d3",
+      "AttackLevelDivisor": 3,
+      "AttackChanceDice": "25d3",
+      "DefenseDice": "1d3",
+      "DefenseLevelDivisor": 3,
+      "DefenseChanceDice": "10d4",
+      "GoldDice": "5d5",
+      "Drops": [
+        {
+          "Id": "Enemies.Kobold.Drops.Gold",
+          "Behavior": "Drop.Gold"
+        },
+        {
+          "Id": "Enemies.Kobold.Drops.HealthPotion",
+          "Behavior": "Drop.Item",
+          "ItemId": "Items.Consumable.HealthPotion",
+          "ChanceDice": "1d10",
+          "ChanceThreshold": 10
+        }
+      ]
+    }
+  ]
+}

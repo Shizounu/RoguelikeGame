@@ -28,7 +28,6 @@ C:\_Projects\RoguelikeGame\RoguelikeGame\obj\Debug\RoguelikeGame.csproj.CoreComp
 C:\_Projects\RoguelikeGame\RoguelikeGame\obj\Debug\RoguelikeGame.csproj.CopyComplete
 C:\_Projects\RoguelikeGame\RoguelikeGame\obj\Debug\RoguelikeGame.exe
 C:\_Projects\RoguelikeGame\RoguelikeGame\obj\Debug\RoguelikeGame.pdb
-F:\Projects\RoguelikeGame\RoguelikeGame\bin\Debug\terminal8x8.png
 F:\Projects\RoguelikeGame\RoguelikeGame\bin\Debug\RoguelikeGame.exe.config
 F:\Projects\RoguelikeGame\RoguelikeGame\bin\Debug\RoguelikeGame.exe
 F:\Projects\RoguelikeGame\RoguelikeGame\bin\Debug\RoguelikeGame.pdb
@@ -42,3 +41,21 @@ F:\Projects\RoguelikeGame\RoguelikeGame\obj\Debug\RoguelikeGame.csproj.CoreCompi
 F:\Projects\RoguelikeGame\RoguelikeGame\obj\Debug\Roguelik.62771385.Up2Date
 F:\Projects\RoguelikeGame\RoguelikeGame\obj\Debug\RoguelikeGame.exe
 F:\Projects\RoguelikeGame\RoguelikeGame\obj\Debug\RoguelikeGame.pdb
+F:\Projects\RoguelikeGame\RoguelikeGame\bin\Debug\Resources\assets\visual\Terminal8x8.png
+F:\Projects\RoguelikeGame\RoguelikeGame\bin\Debug\Resources\StaticMaps\overworld.json
+F:\Projects\RoguelikeGame\RoguelikeGame\bin\Debug\Resources\Definitions\Cities\Haven.json
+F:\Projects\RoguelikeGame\RoguelikeGame\bin\Debug\Resources\Definitions\Dialogues\Haven\ElinTheTraveler.json
+F:\Projects\RoguelikeGame\RoguelikeGame\bin\Debug\Resources\Definitions\Dialogues\Haven\MaraTheBaker.json
+F:\Projects\RoguelikeGame\RoguelikeGame\bin\Debug\Resources\Definitions\Dialogues\Haven\PerrinTheMerchant.json
+F:\Projects\RoguelikeGame\RoguelikeGame\bin\Debug\Resources\Definitions\Dialogues\Haven\TomasTheGuard.json
+F:\Projects\RoguelikeGame\RoguelikeGame\bin\Debug\Resources\Definitions\Enemies\Kobolds.json
+F:\Projects\RoguelikeGame\RoguelikeGame\bin\Debug\Resources\Definitions\Items\Health Potion.json
+F:\Projects\RoguelikeGame\RoguelikeGame\bin\Debug\Resources\Definitions\Npcs\Haven\ElinTheTraveler.json
+F:\Projects\RoguelikeGame\RoguelikeGame\bin\Debug\Resources\Definitions\Npcs\Haven\MaraTheBaker.json
+F:\Projects\RoguelikeGame\RoguelikeGame\bin\Debug\Resources\Definitions\Npcs\Haven\PerrinTheMerchant.json
+F:\Projects\RoguelikeGame\RoguelikeGame\bin\Debug\Resources\Definitions\Npcs\Haven\TomasTheGuard.json
+F:\Projects\RoguelikeGame\RoguelikeGame\bin\Debug\Resources\Definitions\Palettes\Dawnbringer.json
+F:\Projects\RoguelikeGame\RoguelikeGame\bin\Debug\Resources\Definitions\Palettes\Ember.json
+F:\Projects\RoguelikeGame\RoguelikeGame\bin\Debug\Resources\Definitions\Palettes\Monochrome.json
+F:\Projects\RoguelikeGame\RoguelikeGame\bin\Debug\Resources\Definitions\Spawns\DungeonKobolds.json
+F:\Projects\RoguelikeGame\RoguelikeGame\bin\Debug\Resources\Definitions\Worlds\Main.json

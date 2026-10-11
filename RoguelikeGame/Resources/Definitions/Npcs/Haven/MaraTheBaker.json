@@ -1,0 +1,12 @@
+{
+  "Npcs": [
+    {
+      "Id": "Cities.Haven.Npcs.MaraTheBaker",
+      "Name": "Mara the baker",
+      "Symbol": "n",
+      "ColorRole": "Palettes.Dawnbringer.DbSkin",
+      "Wanders": true,
+      "DialogueTreeId": "Dialogues.Haven.MaraTheBaker"
+    }
+  ]
+}

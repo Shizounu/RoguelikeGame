@@ -7,7 +7,7 @@ using RogueSharp.DiceNotation;
 
 using RoguelikeGame.Systems.RandomProvider;
 using RoguelikeGame.Map.Actors;
-using RoguelikeGame.Core.Map.Actors;
+using RoguelikeGame.Systems.Content;
 
 namespace RoguelikeGame.Map
 {
@@ -129,14 +129,20 @@ namespace RoguelikeGame.Map
 
         private static void PlaceMonsters(DungeonMap _map, int Layer)
         {
-            int Threshhold = 7 - Math.Max(0, Layer - 3);
+            ContentCatalog.SpawnTableDefinition table = ContentCatalog.Current
+                .GetSpawnTable("Spawns.Dungeon.Kobolds");
+            if (Layer < table.MinimumLayer || Layer > table.MaximumLayer)
+                return;
+
+            int threshold = table.BaseRoomThreshold -
+                Math.Max(0, Layer - table.ThresholdDecreaseAfterLayer) * table.ThresholdDecreasePerLayer;
+            threshold = Math.Max(0, threshold);
             foreach (var room in _map.Rooms)
             {
-                // Each room has a 60% chance of having monsters
-                if (Dice.Roll("1D10") < Threshhold)
+                if (Dice.Roll(table.RoomChanceDice) < threshold)
                 {
-                    // Generate between 1 and 4 monsters
-                    var numberOfMonsters = Dice.Roll($"1D{Math.Max(1, Layer)}");
+                    string countDice = table.CountDiceTemplate.Replace("{Layer}", Layer.ToString());
+                    var numberOfMonsters = Dice.Roll(countDice);
                     for (int i = 0; i < numberOfMonsters; i++)
                     {
                         // Find a random walkable location in the room to place the monster
@@ -145,8 +151,8 @@ namespace RoguelikeGame.Map
                         // In that case skip creating the monster
                         if (randomRoomLocation != null)
                         {
-                            // Temporarily hard code this monster to be created at level 1
-                            var monster = GenericMonsters.CreateKobold(Math.Max(1, Layer / 3));
+                            var monster = ContentCatalog.Current.CreateEnemy(table.EnemyId,
+                                Math.Max(table.MinimumEnemyLevel, Layer / table.EnemyLevelDivisor));
                             monster.X = randomRoomLocation.X;
                             monster.Y = randomRoomLocation.Y;
                             _map.AddMonster(monster);

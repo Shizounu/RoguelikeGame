@@ -1,0 +1,12 @@
+{
+  "Npcs": [
+    {
+      "Id": "Cities.Haven.Npcs.PerrinTheMerchant",
+      "Name": "Perrin the merchant",
+      "Symbol": "n",
+      "ColorRole": "Palettes.Dawnbringer.DbBrightWood",
+      "Wanders": true,
+      "DialogueTreeId": "Dialogues.Haven.PerrinTheMerchant"
+    }
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "Items": [
+    {
+      "Id": "Items.Consumable.HealthPotion",
+      "Name": "Healing Potion",
+      "Weight": 0.1,
+      "Type": "Consumable",
+      "Symbol": "p",
+      "ColorRole": "Palettes.Dawnbringer.DbBlood",
+      "Behavior": "Consumable.Heal",
+      "EffectDice": "2d12"
+    }
+  ]
+}

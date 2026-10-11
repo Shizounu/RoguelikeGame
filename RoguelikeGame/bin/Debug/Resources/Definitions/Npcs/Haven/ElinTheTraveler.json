@@ -1,0 +1,12 @@
+{
+  "Npcs": [
+    {
+      "Id": "Cities.Haven.Npcs.ElinTheTraveler",
+      "Name": "Elin the traveler",
+      "Symbol": "n",
+      "ColorRole": "Palettes.Dawnbringer.DbSun",
+      "Wanders": true,
+      "DialogueTreeId": "Dialogues.Haven.ElinTheTraveler"
+    }
+  ]
+}

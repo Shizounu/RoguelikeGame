@@ -1,0 +1,12 @@
+{
+  "Npcs": [
+    {
+      "Id": "Cities.Haven.Npcs.TomasTheGuard",
+      "Name": "Tomas the guard",
+      "Symbol": "n",
+      "ColorRole": "Palettes.Dawnbringer.DbLight",
+      "Wanders": true,
+      "DialogueTreeId": "Dialogues.Haven.TomasTheGuard"
+    }
+  ]
+}

@@ -63,6 +63,7 @@
     <Compile Include="Core\Command System\Command\ResolveDeath.cs" />
     <Compile Include="Core\Command System\ICommand.cs" />
     <Compile Include="Core\ConsoleDefinitions.cs" />
+    <Compile Include="Core\Content\ContentCatalog.cs" />
     <Compile Include="Core\Event System\EventArgs.cs" />
     <Compile Include="Core\Event System\EventArgs\ActorDamageArguments.cs" />
     <Compile Include="Core\Event System\EventArgs\ActorDeathArguments.cs" />
@@ -112,11 +113,16 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="terminal8x8.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="StaticMaps\*.json">
+    <Content Include="Resources\assets\visual\Terminal8x8.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <TargetPath>Resources\assets\visual\Terminal8x8.png</TargetPath>
+    </Content>
+    <Content Include="Resources\StaticMaps\*.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Definitions\**\*.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <TargetPath>Resources\Definitions\%(RecursiveDir)%(Filename)%(Extension)</TargetPath>
     </Content>
   </ItemGroup>
   <ItemGroup />

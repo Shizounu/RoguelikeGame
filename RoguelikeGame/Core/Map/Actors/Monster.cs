@@ -12,15 +12,21 @@ using RoguelikeGame.Systems.Scheduling;
 using RoguelikeGame.Systems.Event.EventArguments;
 using RoguelikeGame.Systems.MapManagment;
 using RoguelikeGame.Map.Actors.Drops;
+using RoguelikeGame.Systems.Content;
 
 namespace RoguelikeGame.Map.Actors
 {
     public class Monster : Actor {
 
         public int? TurnsAlerted { get; set; }
+        public string ContentId { get; set; }
+        public string BehaviorId { get; set; }
+        public List<ContentCatalog.DropDefinition> DropDefinitions { get; set; }
 
         public virtual void PerformAction()
         {
+            if (BehaviorId != null && BehaviorId != "AI.StandardMoveAndAttack")
+                throw new InvalidOperationException($"Monster '{ContentId}' has unsupported behavior '{BehaviorId}'.");
             var behavior = new StandardMoveAndAttack();
             behavior.Act(this);
         }
@@ -55,6 +61,13 @@ namespace RoguelikeGame.Map.Actors
             DoDrops(MapManager.Instance.GetActiveMap(), this);
         }
         public void DoDrops(DungeonMap map, Monster monster) {
+            if (DropDefinitions != null)
+            {
+                foreach (ContentCatalog.DropDefinition drop in DropDefinitions)
+                    ContentCatalog.Current.ExecuteDrop(drop, map, monster);
+                return;
+            }
+
             foreach (var item in DropFunctions) {
                 item.DoDrop(map, monster);
             }

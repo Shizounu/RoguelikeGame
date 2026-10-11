@@ -1,0 +1,126 @@
+{
+  "Cities": [
+    {
+      "Id": "Cities.Haven",
+      "MapId": "city:haven",
+      "ArrivalX": 5,
+      "ArrivalY": 24,
+      "DisplayName": "HAVEN",
+      "Width": 80,
+      "Height": 48,
+      "LightingEnabled": true,
+      "PaletteName": "Dawnbringer",
+      "Terrain": {
+        "Interior": {
+          "Symbol": ".",
+          "ColorRole": "Palettes.Dawnbringer.DbGrass",
+          "BackgroundColorRole": "Palettes.Dawnbringer.PrimaryDarkest",
+          "Walkable": true,
+          "Transparent": true
+        },
+        "Border": {
+          "Symbol": "#",
+          "ColorRole": "Palettes.Dawnbringer.DbOldStone",
+          "BackgroundColorRole": "Palettes.Dawnbringer.SecondaryDarkest",
+          "Walkable": false,
+          "Transparent": false
+        }
+      },
+      "Features": [
+        {
+          "X": 3,
+          "Y": 24,
+          "Width": 74,
+          "Height": 1,
+          "Symbol": ".",
+          "ColorRole": "Palettes.Dawnbringer.DbBrightWood",
+          "BackgroundColorRole": "Palettes.Dawnbringer.PrimaryDarkest",
+          "Walkable": true,
+          "Transparent": true
+        },
+        {
+          "X": 40,
+          "Y": 3,
+          "Width": 1,
+          "Height": 42,
+          "Symbol": ".",
+          "ColorRole": "Palettes.Dawnbringer.DbBrightWood",
+          "BackgroundColorRole": "Palettes.Dawnbringer.PrimaryDarkest",
+          "Walkable": true,
+          "Transparent": true
+        },
+        {
+          "X": 10,
+          "Y": 9,
+          "Width": 9,
+          "Height": 7,
+          "Symbol": "I",
+          "ColorRole": "Palettes.Dawnbringer.DbWood",
+          "BackgroundColorRole": "Palettes.Dawnbringer.PrimaryDarkest",
+          "Walkable": false,
+          "Transparent": false
+        },
+        {
+          "X": 27,
+          "Y": 8,
+          "Width": 9,
+          "Height": 7,
+          "Symbol": "M",
+          "ColorRole": "Palettes.Dawnbringer.DbWood",
+          "BackgroundColorRole": "Palettes.Dawnbringer.PrimaryDarkest",
+          "Walkable": false,
+          "Transparent": false
+        },
+        {
+          "X": 46,
+          "Y": 9,
+          "Width": 9,
+          "Height": 7,
+          "Symbol": "H",
+          "ColorRole": "Palettes.Dawnbringer.DbWood",
+          "BackgroundColorRole": "Palettes.Dawnbringer.PrimaryDarkest",
+          "Walkable": false,
+          "Transparent": false
+        },
+        {
+          "X": 13,
+          "Y": 30,
+          "Width": 9,
+          "Height": 7,
+          "Symbol": "H",
+          "ColorRole": "Palettes.Dawnbringer.DbWood",
+          "BackgroundColorRole": "Palettes.Dawnbringer.PrimaryDarkest",
+          "Walkable": false,
+          "Transparent": false
+        },
+        {
+          "X": 43,
+          "Y": 30,
+          "Width": 10,
+          "Height": 8,
+          "Symbol": "B",
+          "ColorRole": "Palettes.Dawnbringer.DbWood",
+          "BackgroundColorRole": "Palettes.Dawnbringer.PrimaryDarkest",
+          "Walkable": false,
+          "Transparent": false
+        }
+      ],
+      "Npcs": [
+        { "NpcId": "Cities.Haven.Npcs.MaraTheBaker", "X": 24, "Y": 24 },
+        { "NpcId": "Cities.Haven.Npcs.TomasTheGuard", "X": 39, "Y": 23 },
+        { "NpcId": "Cities.Haven.Npcs.ElinTheTraveler", "X": 58, "Y": 28 },
+        { "NpcId": "Cities.Haven.Npcs.PerrinTheMerchant", "X": 32, "Y": 27 }
+      ],
+      "Exits": [
+        {
+          "X": 5,
+          "Y": 24,
+          "Symbol": "<",
+          "TargetMapId": "overworld",
+          "TargetX": 55,
+          "TargetY": 24
+        }
+      ]
+    }
+  ]
+}

@@ -6,6 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using RoguelikeGame.Systems.Content;
 
 namespace RoguelikeGame.Systems.MapManagment 
 {
@@ -79,19 +80,27 @@ namespace RoguelikeGame.Systems.MapManagment
             int dungeonArrivalY = player.Y;
 
             string mapDirectory = StaticMapDirectory;
+            ContentCatalog catalog = ContentCatalog.Current;
+            ContentCatalog.WorldDefinition worldDefinition = catalog.GetWorld("Worlds.Main");
+            ContentCatalog.CityDefinition cityDefinition = catalog.GetCity("Cities.Haven");
             DungeonMap overworld = StaticMapFileService.LoadOrCreate(
-                StaticMapFileService.GetMapFilePath(mapDirectory, WorldGenerator.OverworldMapId),
-                WorldGenerator.OverworldMapId,
+                Path.Combine(mapDirectory, worldDefinition.StaticMapFile),
+                worldDefinition.MapId,
                 () => WorldGenerator.CreateOverworld(
                     ConsoleDefinitions.MapConsoleWidth, ConsoleDefinitions.MapConsoleHeight));
-            DungeonMap city = StaticMapFileService.LoadOrCreate(
-                StaticMapFileService.GetMapFilePath(mapDirectory, WorldGenerator.CityMapId),
-                WorldGenerator.CityMapId,
-                () => WorldGenerator.CreateCity(
-                    ConsoleDefinitions.MapConsoleWidth, ConsoleDefinitions.MapConsoleHeight));
+            foreach (RoguelikeGame.Map.Object.Stairs exit in overworld.interactables
+                .OfType<RoguelikeGame.Map.Object.Stairs>()
+                .Where(stairs => string.Equals(stairs.TargetMapId, cityDefinition.MapId,
+                    StringComparison.OrdinalIgnoreCase)))
+            {
+                exit.TargetX = cityDefinition.ArrivalX;
+                exit.TargetY = cityDefinition.ArrivalY;
+            }
 
-            RegisterMap(WorldGenerator.OverworldMapId, overworld);
-            RegisterMap(WorldGenerator.CityMapId, city);
+            DungeonMap city = WorldGenerator.CreateCity(cityDefinition, catalog);
+
+            RegisterMap(worldDefinition.MapId, overworld);
+            RegisterMap(cityDefinition.MapId, city);
 
             dungeon.interactables.RemoveAll(interactable =>
             {
@@ -103,14 +112,13 @@ namespace RoguelikeGame.Systems.MapManagment
                 X = dungeonArrivalX,
                 Y = dungeonArrivalY,
                 Symbol = '<',
-                TargetMapId = WorldGenerator.OverworldMapId,
+                TargetMapId = worldDefinition.MapId,
                 TargetX = WorldGenerator.DungeonEntranceX,
                 TargetY = WorldGenerator.DungeonEntranceY
             });
 
             ValidateNamedConnections();
-            TransitionPlayer(player, WorldGenerator.OverworldMapId,
-                WorldGenerator.OverworldArrivalX, WorldGenerator.OverworldArrivalY);
+            TransitionPlayer(player, worldDefinition.MapId, worldDefinition.ArrivalX, worldDefinition.ArrivalY);
         }
 
         private void ValidateNamedConnections()
@@ -149,7 +157,7 @@ namespace RoguelikeGame.Systems.MapManagment
 
         private static string GetDefaultStaticMapDirectory()
         {
-            return Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "StaticMaps");
+            return Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Resources", "StaticMaps");
         }
 
         public DungeonMap GetActiveMap()

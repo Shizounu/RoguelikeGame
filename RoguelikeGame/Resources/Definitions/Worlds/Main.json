@@ -1,0 +1,11 @@
+{
+  "Worlds": [
+    {
+      "Id": "Worlds.Main",
+      "MapId": "overworld",
+      "StaticMapFile": "overworld.json",
+      "ArrivalX": 8,
+      "ArrivalY": 24
+    }
+  ]
+}

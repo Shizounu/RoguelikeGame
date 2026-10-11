@@ -10,6 +10,7 @@ using RoguelikeGame.Systems.Command;
 using RoguelikeGame.Systems.Command.Commands;
 using RoguelikeGame.Systems.Scheduling;
 using RoguelikeGame.Systems.MapManagment;
+using RoguelikeGame.Systems.Content;
 
 namespace RoguelikeGame
 {
@@ -40,10 +41,14 @@ namespace RoguelikeGame
 
         public static Map.Actors.Player Player;
 
-        private const string fontFileName = "terminal8x8.png";
+        private static readonly string fontFileName = System.IO.Path.Combine(
+            System.AppDomain.CurrentDomain.BaseDirectory, "Resources", "assets", "visual", "Terminal8x8.png");
         private const string consoleTitle = "Roguesharp Roguelike";
         public void Init()
         {
+            ContentCatalog.LoadFromDirectory(
+                System.IO.Path.Combine(System.AppDomain.CurrentDomain.BaseDirectory, "Resources", "Definitions"));
+
             RLSettings settings = new RLSettings
             {
                 BitmapFile = fontFileName,

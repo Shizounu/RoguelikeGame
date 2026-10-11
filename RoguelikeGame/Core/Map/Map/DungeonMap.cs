@@ -10,6 +10,7 @@ using RoguelikeGame.Color;
 using RoguelikeGame.Map.Actors;
 using RoguelikeGame.Map.Object;
 using RoguelikeGame.Systems;
+using RoguelikeGame.Systems.Content;
 
 namespace RoguelikeGame.Map
 {
@@ -133,19 +134,7 @@ namespace RoguelikeGame.Map
 
         public RLColor ApplyPalette(RLColor color)
         {
-            if (string.Equals(PaletteName, "Dawnbringer", StringComparison.OrdinalIgnoreCase))
-                return color;
-
-            if (string.Equals(PaletteName, "Monochrome", StringComparison.OrdinalIgnoreCase))
-            {
-                float gray = color.r * 0.299f + color.g * 0.587f + color.b * 0.114f;
-                return new RLColor(gray, gray, gray);
-            }
-
-            if (string.Equals(PaletteName, "Ember", StringComparison.OrdinalIgnoreCase))
-                return new RLColor(color.r, color.g * 0.45f, color.b * 0.2f);
-
-            throw new InvalidOperationException($"Unknown map palette '{PaletteName}'.");
+            return ContentCatalog.Current.GetPalette(PaletteName).Apply(color);
         }
 
         private RLColor ApplyLighting(RLColor color, int x, int y)

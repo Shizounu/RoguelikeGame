@@ -1,0 +1,19 @@
+{
+  "Dialogues": [
+    {
+      "Id": "Dialogues.Haven.ElinTheTraveler",
+      "EntryNodes": [
+        { "Priority": 0, "NodeId": "Greeting" }
+      ],
+      "Nodes": [
+        {
+          "Id": "Greeting",
+          "Type": "Sentence",
+          "Speaker": "Elin the traveler",
+          "Text": "The old road leads to stranger places.",
+          "Branches": []
+        }
+      ]
+    }
+  ]
+}

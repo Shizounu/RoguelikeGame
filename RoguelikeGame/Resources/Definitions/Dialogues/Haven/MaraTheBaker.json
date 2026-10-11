@@ -1,0 +1,19 @@
+{
+  "Dialogues": [
+    {
+      "Id": "Dialogues.Haven.MaraTheBaker",
+      "EntryNodes": [
+        { "Priority": 0, "NodeId": "Greeting" }
+      ],
+      "Nodes": [
+        {
+          "Id": "Greeting",
+          "Type": "Sentence",
+          "Speaker": "Mara the baker",
+          "Text": "Fresh bread for the road!",
+          "Branches": []
+        }
+      ]
+    }
+  ]
+}

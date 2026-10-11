@@ -1,0 +1,17 @@
+{
+  "SpawnTables": [
+    {
+      "Id": "Spawns.Dungeon.Kobolds",
+      "MinimumLayer": 1,
+      "MaximumLayer": 2147483647,
+      "EnemyId": "Enemies.Kobold",
+      "RoomChanceDice": "1d10",
+      "BaseRoomThreshold": 7,
+      "ThresholdDecreaseAfterLayer": 3,
+      "ThresholdDecreasePerLayer": 1,
+      "CountDiceTemplate": "1d{Layer}",
+      "MinimumEnemyLevel": 1,
+      "EnemyLevelDivisor": 3
+    }
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "Dialogues": [
+    {
+      "Id": "Dialogues.Haven.TomasTheGuard",
+      "EntryNodes": [
+        { "Priority": 0, "NodeId": "Greeting" }
+      ],
+      "Nodes": [
+        {
+          "Id": "Greeting",
+          "Type": "Sentence",
+          "Speaker": "Tomas the guard",
+          "Text": "Keep your wits about you beyond the walls.",
+          "Branches": []
+        }
+      ]
+    }
+  ]
+}

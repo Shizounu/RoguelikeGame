@@ -1,0 +1,18 @@
+{
+  "Palettes": [
+    {
+      "Id": "Palettes.Monochrome",
+      "Transform": "Grayscale",
+      "RedMultiplier": 1,
+      "GreenMultiplier": 1,
+      "BlueMultiplier": 1,
+      "Colors": [
+        { "Name": "DbBlood", "Red": 208, "Green": 70, "Blue": 72 },
+        { "Name": "DbBrightWood", "Red": 210, "Green": 125, "Blue": 44 },
+        { "Name": "DbSkin", "Red": 210, "Green": 170, "Blue": 153 },
+        { "Name": "DbSun", "Red": 218, "Green": 212, "Blue": 94 },
+        { "Name": "DbLight", "Red": 222, "Green": 238, "Blue": 214 }
+      ]
+    }
+  ]
+}
