@@ -1,4 +1,5 @@
 using RLNET;
+using System;
 using System.Collections.Generic;
 
 namespace RoguelikeGame.Systems.Input
@@ -17,6 +18,8 @@ namespace RoguelikeGame.Systems.Input
 
         public event InputHandler OnUserInput;
 
+        public Func<RLKey, bool> InputOverride { get; set; }
+
         public List<IClickable> clickables = new List<IClickable>();
 
         public void CheckInput(RLRootConsole rootConsole) {
@@ -24,6 +27,9 @@ namespace RoguelikeGame.Systems.Input
             RLKeyPress keyPress = rootConsole.Keyboard.GetKeyPress();
 
             if (keyPress == null)
+                return;
+
+            if (InputOverride != null && InputOverride(keyPress.Key))
                 return;
 
             switch (keyPress.Key) {
@@ -57,7 +63,6 @@ namespace RoguelikeGame.Systems.Input
 
                 case RLKey.Escape:
                     OnCloseInput?.Invoke();
-                    OnUserInput?.Invoke();
                     break;
             }
 
@@ -73,10 +78,15 @@ namespace RoguelikeGame.Systems.Input
             clickables.Remove(clickable);
         }
         public bool CheckClickables(RLRootConsole rootConsole) {
-            if(clickables.Count == 0)
+            return CheckClickables(rootConsole, clickables);
+        }
+
+        public bool CheckClickables(RLRootConsole rootConsole, IEnumerable<IClickable> activeClickables) {
+            List<IClickable> currentClickables = new List<IClickable>(activeClickables);
+            if(currentClickables.Count == 0)
                 return false;
             bool returnVal = false;
-            foreach (var clickable in clickables) {
+            foreach (var clickable in currentClickables) {
                 if (clickable.IsHovered || clickable.WasClickedThisFrame)
                     returnVal = true;
                 clickable.IsHovered = false; 
@@ -85,7 +95,7 @@ namespace RoguelikeGame.Systems.Input
             int mouseX = rootConsole.Mouse.X;
             int mouseY = rootConsole.Mouse.Y; 
             
-            foreach (var clickable in clickables) {
+            foreach (var clickable in currentClickables) {
                 if(IsMouseInBounds(clickable, mouseX, mouseY)) {
                     clickable.IsHovered = true;
                     if (rootConsole.Mouse.GetLeftClick())

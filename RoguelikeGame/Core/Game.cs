@@ -11,6 +11,7 @@ using RoguelikeGame.Systems.Command.Commands;
 using RoguelikeGame.Systems.Scheduling;
 using RoguelikeGame.Systems.MapManagment;
 using RoguelikeGame.Systems.Content;
+using RoguelikeGame.Systems.Menus;
 
 namespace RoguelikeGame
 {
@@ -41,6 +42,11 @@ namespace RoguelikeGame
 
         public static Map.Actors.Player Player;
 
+        private readonly MenuSystem _menuSystem = new MenuSystem();
+        private bool _hasStartedGame;
+        private bool _showEnemyPanel = true;
+        private bool _showInventoryPanel = true;
+
         private static readonly string fontFileName = System.IO.Path.Combine(
             System.AppDomain.CurrentDomain.BaseDirectory, "Resources", "assets", "visual", "Terminal8x8.png");
         private const string consoleTitle = "Roguesharp Roguelike";
@@ -69,6 +75,7 @@ namespace RoguelikeGame
             InitMessage();
             InitInventory();
 
+            InitMenus();
             InitInput();
 
             // Set up a handler for RLNET's Update event
@@ -82,12 +89,15 @@ namespace RoguelikeGame
 
 
 
-        private static void InitInput()
+        private void InitInput()
         {
 
             _rootConsole.Update += (obj, args) => InputSystem.Instance.CheckInput(_rootConsole);
             _rootConsole.Update += (obj, args) => {
-                if (InputSystem.Instance.CheckClickables(_rootConsole))
+                bool changed = _menuSystem.IsOpen
+                    ? InputSystem.Instance.CheckClickables(_rootConsole, _menuSystem.ActiveClickables)
+                    : InputSystem.Instance.CheckClickables(_rootConsole);
+                if (changed)
                     _isDirty = true; 
                 };
 
@@ -115,7 +125,57 @@ namespace RoguelikeGame
             };
 
 
-            InputSystem.Instance.OnCloseInput += () => _rootConsole.Close();
+        }
+
+        private void InitMenus()
+        {
+            MenuScreen settingsMenu = new MenuScreen("SETTINGS");
+
+            MenuItem enemyPanelItem = null;
+            enemyPanelItem = new MenuItem("Enemy health panel: On", RLKey.E, () =>
+            {
+                _showEnemyPanel = !_showEnemyPanel;
+                enemyPanelItem.Text = "Enemy health panel: " + (_showEnemyPanel ? "On" : "Off");
+            });
+            settingsMenu.AddItem(enemyPanelItem);
+
+            MenuItem inventoryPanelItem = null;
+            inventoryPanelItem = new MenuItem("Inventory panel: On", RLKey.I, () =>
+            {
+                _showInventoryPanel = !_showInventoryPanel;
+                inventoryPanelItem.Text = "Inventory panel: " + (_showInventoryPanel ? "On" : "Off");
+            });
+            settingsMenu.AddItem(inventoryPanelItem);
+            settingsMenu.AddItem(new MenuItem("Back", RLKey.B, () => _menuSystem.Back()));
+
+            MenuScreen mainMenu = new MenuScreen("ROGUELIKE");
+            mainMenu.EscapeAction = () => _rootConsole.Close();
+            MenuItem startGameItem = new MenuItem("Start Game", RLKey.N, null);
+            startGameItem.Action = () =>
+            {
+                _hasStartedGame = true;
+                startGameItem.Text = "Continue";
+                _menuSystem.Close();
+            };
+            mainMenu.AddItem(startGameItem);
+            mainMenu.AddItem(new MenuItem("Settings", RLKey.S, () => _menuSystem.OpenSubmenu(settingsMenu)));
+            mainMenu.AddItem(new MenuItem("Quit", RLKey.Q, () => _rootConsole.Close()));
+
+            MenuScreen pauseMenu = new MenuScreen("PAUSED");
+            pauseMenu.EscapeAction = () => _menuSystem.Close();
+            pauseMenu.AddItem(new MenuItem("Resume", RLKey.R, () => _menuSystem.Close()));
+            pauseMenu.AddItem(new MenuItem("Settings", RLKey.S, () => _menuSystem.OpenSubmenu(settingsMenu)));
+            pauseMenu.AddItem(new MenuItem("Main Menu", RLKey.M, () => _menuSystem.Open(mainMenu)));
+            pauseMenu.AddItem(new MenuItem("Quit", RLKey.Q, () => _rootConsole.Close()));
+
+            InputSystem.Instance.InputOverride = _menuSystem.HandleInput;
+            InputSystem.Instance.OnCloseInput += () =>
+            {
+                if (_hasStartedGame)
+                    _menuSystem.Open(pauseMenu);
+            };
+            _menuSystem.OnChanged += () => _isDirty = true;
+            _menuSystem.Open(mainMenu);
         }
         private static void InitMap()
         {
@@ -209,6 +269,9 @@ namespace RoguelikeGame
 
         private void OnRootConsoleUpdate(object sender, UpdateEventArgs e)
         {
+            if (_menuSystem.IsOpen)
+                return;
+
             _mapConsole?.Update(_rootConsole);
             _messageConsole?.Update(_rootConsole);
             _statConsole?.Update(_rootConsole);
@@ -219,12 +282,17 @@ namespace RoguelikeGame
             if (!_isDirty)
                 return;
 
+            _rootConsole.Clear();
             _mapConsole?.Draw(_rootConsole);
             _messageConsole?.Draw(_rootConsole);
             _statConsole?.Draw(_rootConsole);
-            _enemyHealthConsole?.Draw(_rootConsole);
-            _inventoryConsole?.Draw(_rootConsole);
+            if (_showInventoryPanel)
+                _inventoryConsole?.Draw(_rootConsole);
 
+            if (_showEnemyPanel)
+                _enemyHealthConsole?.Draw(_rootConsole);
+
+            _menuSystem.Draw(_rootConsole, ConsoleDefinitions.RootConsoleWidth, ConsoleDefinitions.RootConsoleHeight);
             _rootConsole.Draw();
 
             _isDirty = false;
